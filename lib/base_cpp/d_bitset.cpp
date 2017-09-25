@@ -251,7 +251,7 @@ void Dbitset::andWith(const Dbitset& set) {
    while (_wordsInUse > set._wordsInUse)
       _words[--_wordsInUse] = 0;
    
-   // Perform logical AND on words in common
+   // Perform logical AND on words in lib
    for (int i = 0; i < _wordsInUse; ++i)
       _words[i] &= set._words[i];
    
@@ -262,7 +262,7 @@ void Dbitset::orWith(const Dbitset& set) {
    if (_wordsInUse < set._wordsInUse) 
       _wordsInUse = set._wordsInUse;
    
-   // Perform logical OR on words in common
+   // Perform logical OR on words in lib
    for (int i = 0; i < _wordsInUse; ++i) {
       _words[i] |= set._words[i];
    }  
@@ -273,7 +273,7 @@ void Dbitset::xorWith(const Dbitset& set) {
       _wordsInUse = set._wordsInUse;
    }
    
-   // Perform logical XOR on words in common
+   // Perform logical XOR on words in lib
    for (int i = 0; i < _wordsInUse; ++i)
       _words[i] ^= set._words[i];
    

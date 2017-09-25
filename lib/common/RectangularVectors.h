@@ -6,7 +6,7 @@
 //----------------------------------------------------------------------------------------
 #include <vector>
 
-using std::vector
+using std::vector;
 
 class RectangularVectors {
 public:
