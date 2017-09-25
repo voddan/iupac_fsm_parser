@@ -8,4 +8,4 @@ target_sources(tinyxml PRIVATE
         include/tinystr.h
         include/tinyxml.h)
 
-target_include_directories(tinyxml PUBLIC include)
+target_include_directories(tinyxml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
