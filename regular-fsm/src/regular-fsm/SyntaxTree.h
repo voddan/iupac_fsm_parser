@@ -7,12 +7,17 @@
 
 #include <string>
 #include <vector>
+#include "SyntaxTreeNode.h"
 
 using std::string;
 using std::vector;
 
 class SyntaxTree {
 public:
+    explicit SyntaxTree(const SyntaxTreeNode & root);
+
+private:
+    const SyntaxTreeNode root;
 };
 
 

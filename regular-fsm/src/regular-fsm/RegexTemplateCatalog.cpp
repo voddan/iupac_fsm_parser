@@ -9,5 +9,6 @@ void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplat
 }
 
 RegexSyntaxTree RegexTemplateCatalog::buidRegexSyntaxTree(string rootNodeName) {
-    return RegexSyntaxTree();
+    RegexSyntaxTreeNode root("--", TextPosition{"", 0, 0});
+    return RegexSyntaxTree(root);
 }

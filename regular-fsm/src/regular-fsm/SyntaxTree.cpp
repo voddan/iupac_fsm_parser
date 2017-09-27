@@ -3,3 +3,5 @@
 //
 
 #include "SyntaxTree.h"
+
+SyntaxTree::SyntaxTree(const SyntaxTreeNode & root) : root(root) {}

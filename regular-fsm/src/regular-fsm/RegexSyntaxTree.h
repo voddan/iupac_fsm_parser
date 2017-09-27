@@ -6,22 +6,31 @@
 #define IUPAC_FSM_PARSER_REGEXSYNTAXTREE_H
 
 #include <string>
+#include <vector>
 #include "StateMachine.h"
+#include "RegexSyntaxTreeNode.h"
 
 using std::string;
+using std::vector;
 
-class RegexSyntaxTree : public SyntaxTree{
+class RegexSyntaxTree : public SyntaxTree {
 public:
+    explicit RegexSyntaxTree(RegexSyntaxTreeNode & root);
+
     void calculateAttributes();
 
     void calculateNodeAttributes();
 
     void calculatePositionAttributes();
 
-    string toXML();
-
     StateMachine buildStateMachine();
+
+private:
+//    const RegexSyntaxTreeNode root; TODO: reuse `root` from `SyntaxTree`
+    vector<RegexSyntaxTreeNode> positions;
 };
+
+
 
 
 #endif //IUPAC_FSM_PARSER_REGEXSYNTAXTREE_H
