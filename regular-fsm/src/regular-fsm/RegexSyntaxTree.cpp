@@ -3,25 +3,26 @@
 //
 
 #include "RegexSyntaxTree.h"
-#include <string>
-#include <mmcobj.h>
+#include "SyntaxTreeNode.h"
 
 
-class EOT : public RegexSyntaxTree::Node {
+class EOT : public SyntaxTreeNode {
 public:
-    explicit EOT(const TextPosition & originalPosition) : Node("EOT", originalPosition) {}
+    explicit EOT(const TextPosition & originalPosition) :
+            SyntaxTreeNode("EOT", originalPosition) {}
 };
 
-class SymbolSet : public RegexSyntaxTree::Node {
+class SymbolSet : public SyntaxTreeNode {
 public:
-    explicit SymbolSet(const TextPosition & originalPosition) : Node("symbolset", originalPosition) {}
+    explicit SymbolSet(const TextPosition & originalPosition) :
+            SyntaxTreeNode("symbolset", originalPosition) {}
 };
 
-//class Group: public RegexSyntaxTree::Node {};
-//class Star : public RegexSyntaxTree::Node {};
-//class Plus : public RegexSyntaxTree::Node {};
-//class Optional : public RegexSyntaxTree::Node {};
-//class Alternative : public RegexSyntaxTree::Node {};
+//class Group: public SyntaxTreeNode {};
+//class Star : public SyntaxTreeNode {};
+//class Plus : public SyntaxTreeNode {};
+//class Optional : public SyntaxTreeNode {};
+//class Alternative : public SyntaxTreeNode {};
 
 void RegexSyntaxTree::calculateAttributes() {
 

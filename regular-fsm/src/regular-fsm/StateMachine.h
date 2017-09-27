@@ -5,6 +5,7 @@
 #ifndef IUPAC_FSM_PARSER_STATEMACHINE_H
 #define IUPAC_FSM_PARSER_STATEMACHINE_H
 
+#include <string>
 #include "SyntaxTree.h"
 
 using std::string;

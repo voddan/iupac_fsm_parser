@@ -5,6 +5,7 @@
 #ifndef IUPAC_FSM_PARSER_REGEXSYNTAXTREE_H
 #define IUPAC_FSM_PARSER_REGEXSYNTAXTREE_H
 
+#include <string>
 #include "StateMachine.h"
 
 using std::string;

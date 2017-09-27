@@ -3,7 +3,6 @@
 //
 
 #include "StateMachine.h"
-#include <string>
 
 SyntaxTree StateMachine::parse(string str) {
     return SyntaxTree();
