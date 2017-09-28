@@ -3,11 +3,12 @@
 //
 
 #include <sstream>
+#include <utility>
 #include "SyntaxTreeNode.h"
 
 SyntaxTreeNode::SyntaxTreeNode(
         string nodeClass, TextPosition position) :
-        nodeClass(nodeClass), position(position) {}
+        nodeClass(std::move(nodeClass)), position(std::move(position)) {}
 
 SyntaxTreeNode::~SyntaxTreeNode() {
     delete &children;
