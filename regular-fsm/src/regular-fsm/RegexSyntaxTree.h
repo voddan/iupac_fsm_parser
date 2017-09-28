@@ -7,11 +7,13 @@
 
 #include <string>
 #include <vector>
+#include <map>
 #include "StateMachine.h"
 #include "RegexSyntaxTreeNode.h"
 
 using std::string;
 using std::vector;
+using std::map;
 
 class RegexSyntaxTree : public SyntaxTree {
 public:
@@ -27,7 +29,8 @@ public:
     StateMachine buildStateMachine();
 
 private:
-    vector<RegexSyntaxTreeNode *> & positions = *new vector<RegexSyntaxTreeNode *>();
+    map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & followposAttribute
+            = *new map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>>();
 };
 
 

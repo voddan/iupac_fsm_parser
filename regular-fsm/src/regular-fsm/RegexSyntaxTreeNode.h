@@ -16,11 +16,22 @@ public:
     RegexSyntaxTreeNode(string nodeClass, TextPosition position);
     virtual ~RegexSyntaxTreeNode();
 
+//    #pragma ide diagnostic ignored "HidingNonVirtualFunction"
+    inline const vector<RegexSyntaxTreeNode *> & getChildren() const {
+        return (const vector<RegexSyntaxTreeNode *> &) SyntaxTreeNode::getChildren();
+    }
+
     void calculateAttributes();
 
-    bool getNullableAttribute() const;
-    const set<RegexSyntaxTreeNode *> & getFirstposAttribute() const;
-    const set<RegexSyntaxTreeNode *> & getLastposAttribute() const;
+    inline bool getNullableAttribute() const {
+        return nullableAttribute;
+    }
+    inline const set<RegexSyntaxTreeNode *> & getFirstposAttribute() const {
+        return firstposAttribute;
+    }
+    inline const set<RegexSyntaxTreeNode *> & getLastposAttribute() const {
+        return lastposAttribute;
+    }
 
 private:
     bool nullableAttribute;

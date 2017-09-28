@@ -8,11 +8,12 @@
 RegexSyntaxTree::RegexSyntaxTree(const RegexSyntaxTreeNode & root) : SyntaxTree(root) {}
 
 RegexSyntaxTree::~RegexSyntaxTree() {
-    delete &positions;
+    delete &followposAttribute;
 }
 
 void RegexSyntaxTree::calculateAttributes() {
-
+    calculateNodeAttributes();
+    calculatePositionAttributes();
 }
 
 void RegexSyntaxTree::calculateNodeAttributes() {

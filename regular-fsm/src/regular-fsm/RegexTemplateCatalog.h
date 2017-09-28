@@ -5,9 +5,12 @@
 #ifndef IUPAC_FSM_PARSER_REGEXSYNTAXTREEBUILDER_H
 #define IUPAC_FSM_PARSER_REGEXSYNTAXTREEBUILDER_H
 
+#include <string>
+#include <map>
 #include "RegexSyntaxTree.h"
 
 using std::string;
+using std::map;
 
 /**
  * Contains regex tamplaits, basic first.
@@ -23,6 +26,9 @@ public:
      * Also adds a terminal symbol to the end of the tree.
      * */
     RegexSyntaxTree buidRegexSyntaxTree(string rootNodeName);
+
+private:
+    map<string, string> & templateList = *new map<string, string>();
 };
 
 

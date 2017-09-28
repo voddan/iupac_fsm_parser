@@ -47,7 +47,11 @@ public:
 
         bool accepts(char input) const;
 
-    public:
+        inline const State & getDestination() const {
+            return destination;
+        }
+
+    private:
         const State & destination;
         const set<char> & charset;
     };

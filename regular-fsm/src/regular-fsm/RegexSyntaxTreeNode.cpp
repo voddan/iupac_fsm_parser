@@ -13,18 +13,6 @@ RegexSyntaxTreeNode::~RegexSyntaxTreeNode() {
     delete &lastposAttribute;
 }
 
-bool RegexSyntaxTreeNode::getNullableAttribute() const {
-    return nullableAttribute;
-}
-
-const set<RegexSyntaxTreeNode *> & RegexSyntaxTreeNode::getFirstposAttribute() const {
-    return firstposAttribute;
-}
-
-const set<RegexSyntaxTreeNode *> & RegexSyntaxTreeNode::getLastposAttribute() const {
-    return lastposAttribute;
-}
-
 void RegexSyntaxTreeNode::calculateAttributes() {
 
 }

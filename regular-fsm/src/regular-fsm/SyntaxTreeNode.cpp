@@ -28,7 +28,3 @@ string SyntaxTreeNode::prettyPrint(int indent) {
     }
     return str.str();
 }
-
-void SyntaxTreeNode::addChild(SyntaxTreeNode & child) {
-    children.push_back(&child);
-}

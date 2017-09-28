@@ -21,7 +21,7 @@ StateMachine::State::~State() {
 const StateMachine::State & StateMachine::State::processInput(char input) const {
     for(auto trans : transitions) {
         if(trans.accepts(input))
-            return trans.destination;
+            return trans.getDestination();
     }
 
     throw indigo::Exception("Input '%c' cannot be processed", input);

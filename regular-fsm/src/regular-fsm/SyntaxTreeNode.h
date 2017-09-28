@@ -20,9 +20,14 @@ public:
 
     string prettyPrint(int indent = 0);
 
-    void addChild(SyntaxTreeNode & child);
+    inline void addChild(SyntaxTreeNode & child) {
+        children.push_back(&child);
+    }
 
-public:
+    inline const vector<SyntaxTreeNode *> & getChildren() const {
+        return children;
+    }
+
     const string nodeClass;
     const TextPosition position;
 
