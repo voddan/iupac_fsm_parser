@@ -17,24 +17,28 @@ public:
     class State;
     class Transit;
 
-    explicit StateMachine(vector<State> & states);
+    explicit StateMachine(const vector<State> & states);
 
     SyntaxTree parse(string text) const;
+
+private:
+    const vector<State> & states;
 
 public:
     class State {
     public:
         explicit State(bool final);
+        virtual ~State();
 
         const State & processInput(char input) const;
 
         void addTransit(Transit transit);
 
-        const bool isFinal() const;
+        bool isFinal() const;
 
     private:
         const bool final;
-        vector<Transit> transitions;
+        vector<Transit> & transitions = *new vector<Transit>();
     };
 
     class Transit {
@@ -45,11 +49,8 @@ public:
 
     public:
         const State & destination;
-        const set<char> charset;
+        const set<char> & charset;
     };
-
-private:
-    const vector<State> states;
 };
 
 

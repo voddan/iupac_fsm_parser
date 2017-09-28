@@ -9,8 +9,7 @@
 
 using std::string;
 
-class TextPosition {
-public:
+struct TextPosition {
     const string text;
     const int start;
     const int end;

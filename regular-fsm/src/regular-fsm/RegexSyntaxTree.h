@@ -15,7 +15,8 @@ using std::vector;
 
 class RegexSyntaxTree : public SyntaxTree {
 public:
-    explicit RegexSyntaxTree(RegexSyntaxTreeNode & root);
+    explicit RegexSyntaxTree(const RegexSyntaxTreeNode & root);
+    virtual ~RegexSyntaxTree();
 
     void calculateAttributes();
 
@@ -26,8 +27,7 @@ public:
     StateMachine buildStateMachine();
 
 private:
-//    const RegexSyntaxTreeNode root; TODO: reuse `root` from `SyntaxTree`
-    vector<RegexSyntaxTreeNode> positions;
+    vector<RegexSyntaxTreeNode *> & positions = *new vector<RegexSyntaxTreeNode *>();
 };
 
 

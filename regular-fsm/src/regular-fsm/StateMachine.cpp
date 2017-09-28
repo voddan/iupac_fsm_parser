@@ -5,7 +5,7 @@
 #include <base_cpp/exception.h>
 #include "StateMachine.h"
 
-StateMachine::StateMachine(vector<StateMachine::State> & states) : states(states) {}
+StateMachine::StateMachine(const vector<State> & states) : states(states) {}
 
 SyntaxTree StateMachine::parse(string str) const {
     SyntaxTreeNode root("--", TextPosition{"", 0, 0});
@@ -13,6 +13,10 @@ SyntaxTree StateMachine::parse(string str) const {
 }
 
 StateMachine::State::State(bool final) : final(final) {}
+
+StateMachine::State::~State() {
+    delete &transitions;
+}
 
 const StateMachine::State & StateMachine::State::processInput(char input) const {
     for(auto trans : transitions) {
@@ -23,11 +27,11 @@ const StateMachine::State & StateMachine::State::processInput(char input) const 
     throw indigo::Exception("Input '%c' cannot be processed", input);
 }
 
-void StateMachine::State::addTransit(StateMachine::Transit transit) {
+void StateMachine::State::addTransit(Transit transit) {
     transitions.push_back(transit);
 }
 
-const bool StateMachine::State::isFinal() const {
+bool StateMachine::State::isFinal() const {
     return final;
 }
 

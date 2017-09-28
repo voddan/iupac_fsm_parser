@@ -6,8 +6,12 @@
 #include "SyntaxTreeNode.h"
 
 SyntaxTreeNode::SyntaxTreeNode(
-        const string & nodeClass, const TextPosition & position) :
+        string nodeClass, TextPosition position) :
         nodeClass(nodeClass), position(position) {}
+
+SyntaxTreeNode::~SyntaxTreeNode() {
+    delete &children;
+}
 
 string SyntaxTreeNode::prettyPrint(int indent) {
     std::ostringstream str;
@@ -17,7 +21,7 @@ string SyntaxTreeNode::prettyPrint(int indent) {
 
     if(!children.empty()) {
         for(auto child: children) {
-            str << child.prettyPrint(indent + 1);
+            str << child->prettyPrint(indent + 1);
         }
         str << indent_str << "</" << nodeClass << ">";
     }
@@ -25,5 +29,5 @@ string SyntaxTreeNode::prettyPrint(int indent) {
 }
 
 void SyntaxTreeNode::addChild(SyntaxTreeNode & child) {
-    children.push_back(child);
+    children.push_back(&child);
 }

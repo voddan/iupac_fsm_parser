@@ -4,18 +4,24 @@
 
 #include "RegexSyntaxTreeNode.h"
 
-RegexSyntaxTreeNode::RegexSyntaxTreeNode(const string & nodeClass, const TextPosition & position) :
+
+RegexSyntaxTreeNode::RegexSyntaxTreeNode(string nodeClass, TextPosition position) :
         SyntaxTreeNode(nodeClass, position) {}
+
+RegexSyntaxTreeNode::~RegexSyntaxTreeNode() {
+    delete &firstposAttribute;
+    delete &lastposAttribute;
+}
 
 bool RegexSyntaxTreeNode::getNullableAttribute() const {
     return nullableAttribute;
 }
 
-const set<RegexSyntaxTreeNode> & RegexSyntaxTreeNode::getFirstposAttribute() const {
+const set<RegexSyntaxTreeNode *> & RegexSyntaxTreeNode::getFirstposAttribute() const {
     return firstposAttribute;
 }
 
-const set<RegexSyntaxTreeNode> & RegexSyntaxTreeNode::getLastposAttribute() const {
+const set<RegexSyntaxTreeNode *> & RegexSyntaxTreeNode::getLastposAttribute() const {
     return lastposAttribute;
 }
 

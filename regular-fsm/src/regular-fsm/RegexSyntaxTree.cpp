@@ -5,7 +5,11 @@
 #include "RegexSyntaxTree.h"
 
 
-RegexSyntaxTree::RegexSyntaxTree(RegexSyntaxTreeNode & root) : SyntaxTree(root) {}
+RegexSyntaxTree::RegexSyntaxTree(const RegexSyntaxTreeNode & root) : SyntaxTree(root) {}
+
+RegexSyntaxTree::~RegexSyntaxTree() {
+    delete &positions;
+}
 
 void RegexSyntaxTree::calculateAttributes() {
 

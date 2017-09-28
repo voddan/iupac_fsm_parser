@@ -17,7 +17,7 @@ public:
     explicit SyntaxTree(const SyntaxTreeNode & root);
 
 private:
-    const SyntaxTreeNode root;
+    const SyntaxTreeNode & root;
 };
 
 

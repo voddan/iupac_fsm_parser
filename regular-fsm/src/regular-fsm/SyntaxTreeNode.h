@@ -15,7 +15,8 @@ using std::vector;
 
 class SyntaxTreeNode {
 public:
-    SyntaxTreeNode(const string & nodeClass, const TextPosition & position);
+    SyntaxTreeNode(string nodeClass, TextPosition position);
+    virtual ~SyntaxTreeNode();
 
     string prettyPrint(int indent = 0);
 
@@ -26,7 +27,7 @@ public:
     const TextPosition position;
 
 private:
-    vector<SyntaxTreeNode> children;
+    vector<SyntaxTreeNode *> & children = *new vector<SyntaxTreeNode *>();
 };
 
 
