@@ -2,24 +2,33 @@
 // Created by Daniil_Vodopian on 9/26/2017.
 //
 
-#include <base_cpp/exception.h>
 #include "StateMachine.h"
 
-StateMachine::StateMachine(const vector<State> & states) : states(states) {}
+
+#include <base_cpp/exception.h>
+
+using std::move;
+
+StateMachine::StateMachine(vector<State> states) : states(move(states)) {}
+
+StateMachine::StateMachine(StateMachine && other) noexcept : states((vector<State> &&) other.states) {}
 
 SyntaxTree StateMachine::parse(string str) const {
     SyntaxTreeNode root("--", TextPosition{"", 0, 0});
-    return SyntaxTree(root);
+    SyntaxTree tree(move(root));
+    return move(tree);
 }
+
 
 StateMachine::State::State(bool final) : final(final) {}
 
-StateMachine::State::~State() {
-    delete &transitions;
+StateMachine::State::State(State&& other) noexcept : final(other.final) {
+    transitions = move(other.transitions);
 }
 
 const StateMachine::State & StateMachine::State::processInput(char input) const {
-    for(auto trans : transitions) {
+//    for(auto& trans : transitions) {  // a CLion 2017.2.2 bug
+    for(const Transit & trans : transitions) {
         if(trans.accepts(input))
             return trans.getDestination();
     }
@@ -28,17 +37,19 @@ const StateMachine::State & StateMachine::State::processInput(char input) const 
 }
 
 void StateMachine::State::addTransit(Transit transit) {
-    transitions.push_back(transit);
+    transitions.push_back(move(transit));
 }
 
 bool StateMachine::State::isFinal() const {
     return final;
 }
 
-StateMachine::Transit::Transit(
-        const StateMachine::State & destination,
-        const set<char> & charset) :
+
+StateMachine::Transit::Transit(const State & destination, set<char> charset) :
         destination(destination), charset(charset) {}
+
+StateMachine::Transit::Transit(Transit && other) noexcept :
+        destination(other.destination), charset(other.charset) {}
 
 bool StateMachine::Transit::accepts(char input) const {
     return charset.find(input) != charset.end();

@@ -4,4 +4,9 @@
 
 #include "SyntaxTree.h"
 
-SyntaxTree::SyntaxTree(const SyntaxTreeNode & root) : root(root) {}
+
+using std::move;
+
+SyntaxTree::SyntaxTree(SyntaxTreeNode root) : root(move(root)) {}
+
+SyntaxTree::SyntaxTree(SyntaxTree && other) noexcept : root((SyntaxTreeNode &&) other.root) {}

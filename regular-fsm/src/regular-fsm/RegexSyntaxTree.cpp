@@ -5,10 +5,12 @@
 #include "RegexSyntaxTree.h"
 
 
-RegexSyntaxTree::RegexSyntaxTree(const RegexSyntaxTreeNode & root) : SyntaxTree(root) {}
+using std::move;
 
-RegexSyntaxTree::~RegexSyntaxTree() {
-    delete &followposAttribute;
+RegexSyntaxTree::RegexSyntaxTree(RegexSyntaxTreeNode root) : SyntaxTree(move(root)) {}
+
+RegexSyntaxTree::RegexSyntaxTree(RegexSyntaxTree && other) noexcept : SyntaxTree(move(other)) {
+    followposAttribute = move(other.followposAttribute);
 }
 
 void RegexSyntaxTree::calculateAttributes() {
@@ -25,6 +27,13 @@ void RegexSyntaxTree::calculatePositionAttributes() {
 }
 
 StateMachine RegexSyntaxTree::buildStateMachine() {
+    StateMachine::State s1(true);
+    StateMachine::State s2(true);
+
     vector<StateMachine::State> states;
-    return StateMachine(states);
+    states.push_back(move(s1));
+    states.push_back(move(s2));
+
+    StateMachine machine(move(states));
+    return move(machine);
 }

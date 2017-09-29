@@ -2,16 +2,19 @@
 // Created by Daniil_Vodopian on 9/27/2017.
 //
 
-#include <sstream>
-#include <utility>
 #include "SyntaxTreeNode.h"
 
-SyntaxTreeNode::SyntaxTreeNode(
-        string nodeClass, TextPosition position) :
-        nodeClass(std::move(nodeClass)), position(std::move(position)) {}
 
-SyntaxTreeNode::~SyntaxTreeNode() {
-    delete &children;
+#include <sstream>
+
+using std::move;
+
+SyntaxTreeNode::SyntaxTreeNode(string nodeClass, TextPosition position) :
+        nodeClass(nodeClass), position(position) {}
+
+SyntaxTreeNode::SyntaxTreeNode(SyntaxTreeNode && other) noexcept :
+        nodeClass(other.nodeClass), position(other.position) {
+    children = move(other.children);
 }
 
 string SyntaxTreeNode::prettyPrint(int indent) {
@@ -27,4 +30,8 @@ string SyntaxTreeNode::prettyPrint(int indent) {
         str << indent_str << "</" << nodeClass << ">";
     }
     return str.str();
+}
+
+void SyntaxTreeNode::addChild(SyntaxTreeNode child) {
+	children.push_back(move(&child));
 }

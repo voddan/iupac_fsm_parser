@@ -7,22 +7,21 @@
 
 #include <string>
 #include <vector>
+#include <base_cpp/non_copyable.h>
 #include "TextPosition.h"
 
 using std::string;
 using std::vector;
 
 
-class SyntaxTreeNode {
+class SyntaxTreeNode : public indigo::NonCopyable {
 public:
     SyntaxTreeNode(string nodeClass, TextPosition position);
-    virtual ~SyntaxTreeNode();
+    SyntaxTreeNode(SyntaxTreeNode && other) noexcept;
 
     string prettyPrint(int indent = 0);
 
-    inline void addChild(SyntaxTreeNode & child) {
-        children.push_back(&child);
-    }
+    inline void addChild(SyntaxTreeNode child);
 
     inline const vector<SyntaxTreeNode *> & getChildren() const {
         return children;
@@ -32,7 +31,7 @@ public:
     const TextPosition position;
 
 private:
-    vector<SyntaxTreeNode *> & children = *new vector<SyntaxTreeNode *>();
+    vector<SyntaxTreeNode *> children;
 };
 
 

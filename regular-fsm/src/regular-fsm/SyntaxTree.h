@@ -7,17 +7,19 @@
 
 #include <string>
 #include <vector>
+#include <base_cpp/non_copyable.h>
 #include "SyntaxTreeNode.h"
 
 using std::string;
 using std::vector;
 
-class SyntaxTree {
+class SyntaxTree : public indigo::NonCopyable {
 public:
-    explicit SyntaxTree(const SyntaxTreeNode & root);
+    explicit SyntaxTree(SyntaxTreeNode root);
+    SyntaxTree(SyntaxTree && other) noexcept;
 
 private:
-    const SyntaxTreeNode & root;
+    const SyntaxTreeNode root;
 };
 
 

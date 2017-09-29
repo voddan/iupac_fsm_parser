@@ -17,8 +17,8 @@ using std::map;
 
 class RegexSyntaxTree : public SyntaxTree {
 public:
-    explicit RegexSyntaxTree(const RegexSyntaxTreeNode & root);
-    virtual ~RegexSyntaxTree();
+    explicit RegexSyntaxTree(RegexSyntaxTreeNode root);
+    RegexSyntaxTree(RegexSyntaxTree && other) noexcept;
 
     void calculateAttributes();
 
@@ -29,8 +29,7 @@ public:
     StateMachine buildStateMachine();
 
 private:
-    map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & followposAttribute
-            = *new map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>>();
+    map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> followposAttribute;
 };
 
 

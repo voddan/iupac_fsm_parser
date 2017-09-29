@@ -4,11 +4,19 @@
 
 #include "RegexTemplateCatalog.h"
 
-void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplate) {
 
+using std::move;
+
+RegexTemplateCatalog::RegexTemplateCatalog(RegexTemplateCatalog && other) noexcept {
+    templateList = move(other.templateList);
+}
+
+void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplate) {
+    templateList[nodeName] = move(regexTemplate);
 }
 
 RegexSyntaxTree RegexTemplateCatalog::buidRegexSyntaxTree(string rootNodeName) {
     RegexSyntaxTreeNode root("--", TextPosition{"", 0, 0});
-    return RegexSyntaxTree(root);
+    RegexSyntaxTree tree(move(root));
+    return move(tree);
 }

@@ -5,12 +5,15 @@
 #include "RegexSyntaxTreeNode.h"
 
 
+using std::move;
+
 RegexSyntaxTreeNode::RegexSyntaxTreeNode(string nodeClass, TextPosition position) :
         SyntaxTreeNode(nodeClass, position) {}
 
-RegexSyntaxTreeNode::~RegexSyntaxTreeNode() {
-    delete &firstposAttribute;
-    delete &lastposAttribute;
+RegexSyntaxTreeNode::RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept : SyntaxTreeNode(move(other)) {
+    nullableAttribute = other.nullableAttribute;
+    firstposAttribute = move(other.firstposAttribute);
+    lastposAttribute = move(other.lastposAttribute);
 }
 
 void RegexSyntaxTreeNode::calculateAttributes() {

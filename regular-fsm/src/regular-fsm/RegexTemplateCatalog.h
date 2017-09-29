@@ -7,6 +7,7 @@
 
 #include <string>
 #include <map>
+#include <base_cpp/non_copyable.h>
 #include "RegexSyntaxTree.h"
 
 using std::string;
@@ -16,8 +17,10 @@ using std::map;
  * Contains regex tamplaits, basic first.
  * A templaite may use an already addded templait 'myName' with %myName%
  * */
-class RegexTemplateCatalog {
+class RegexTemplateCatalog : public indigo::NonCopyable {
 public:
+    RegexTemplateCatalog(RegexTemplateCatalog && other) noexcept;
+
     void addRegexTemplate(string nodeName, string regexTemplate);
 
     /**
@@ -28,7 +31,7 @@ public:
     RegexSyntaxTree buidRegexSyntaxTree(string rootNodeName);
 
 private:
-    map<string, string> & templateList = *new map<string, string>();
+    map<string, string> templateList;
 };
 
 

@@ -14,7 +14,7 @@ using std::set;
 class RegexSyntaxTreeNode : public SyntaxTreeNode {
 public:
     RegexSyntaxTreeNode(string nodeClass, TextPosition position);
-    virtual ~RegexSyntaxTreeNode();
+    RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept;
 
 //    #pragma ide diagnostic ignored "HidingNonVirtualFunction"
     inline const vector<RegexSyntaxTreeNode *> & getChildren() const {
@@ -35,8 +35,8 @@ public:
 
 private:
     bool nullableAttribute;
-    set<RegexSyntaxTreeNode *> & firstposAttribute = *new set<RegexSyntaxTreeNode *>();
-    set<RegexSyntaxTreeNode *> & lastposAttribute = *new set<RegexSyntaxTreeNode *>();
+    set<RegexSyntaxTreeNode *> firstposAttribute;
+    set<RegexSyntaxTreeNode *> lastposAttribute;
 };
 
 

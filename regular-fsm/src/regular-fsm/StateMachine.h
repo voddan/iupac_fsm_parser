@@ -7,28 +7,30 @@
 
 #include <string>
 #include <set>
+#include <base_cpp/non_copyable.h>
 #include "SyntaxTree.h"
 
 using std::string;
 using std::set;
 
-class StateMachine {
+class StateMachine : public indigo::NonCopyable {
 public:
     class State;
     class Transit;
 
-    explicit StateMachine(const vector<State> & states);
+    explicit StateMachine(vector<State> states);
+    StateMachine(StateMachine && other) noexcept;
 
     SyntaxTree parse(string text) const;
 
 private:
-    const vector<State> & states;
+    const vector<State> states;
 
 public:
-    class State {
+    class State : public indigo::NonCopyable {
     public:
         explicit State(bool final);
-        virtual ~State();
+        State(State && other) noexcept;
 
         const State & processInput(char input) const;
 
@@ -38,12 +40,13 @@ public:
 
     private:
         const bool final;
-        vector<Transit> & transitions = *new vector<Transit>();
+        vector<Transit> transitions;
     };
 
-    class Transit {
+    class Transit : public indigo::NonCopyable {
     public:
-        Transit(const State & destination, const set<char> & charset);
+        Transit(const State & destination, set<char> charset);
+        Transit(Transit && other) noexcept;
 
         bool accepts(char input) const;
 
@@ -53,9 +56,11 @@ public:
 
     private:
         const State & destination;
-        const set<char> & charset;
+        const set<char> charset;
     };
 };
+
+
 
 
 #endif //IUPAC_FSM_PARSER_STATEMACHINE_H
