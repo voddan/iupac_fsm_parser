@@ -15,7 +15,7 @@ void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplat
     templateList[nodeName] = move(regexTemplate);
 }
 
-RegexSyntaxTree RegexTemplateCatalog::buidRegexSyntaxTree(string rootNodeName) {
+RegexSyntaxTree RegexTemplateCatalog::buildRegexSyntaxTree(string rootNodeName) {
     RegexSyntaxTreeNode root("--", TextPosition{"", 0, 0});
     RegexSyntaxTree tree(move(root));
     return move(tree);

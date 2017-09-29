@@ -10,7 +10,7 @@
 using std::move;
 
 SyntaxTreeNode::SyntaxTreeNode(string nodeClass, TextPosition position) :
-        nodeClass(nodeClass), position(position) {}
+        nodeClass(move(nodeClass)), position(move(position)) {}
 
 SyntaxTreeNode::SyntaxTreeNode(SyntaxTreeNode && other) noexcept :
         nodeClass(other.nodeClass), position(other.position) {
@@ -33,5 +33,5 @@ string SyntaxTreeNode::prettyPrint(int indent) {
 }
 
 void SyntaxTreeNode::addChild(SyntaxTreeNode child) {
-	children.push_back(move(&child));
+	children.push_back(&child);
 }

@@ -2,8 +2,8 @@
 // Created by Daniil_Vodopian on 9/26/2017.
 //
 
-#ifndef IUPAC_FSM_PARSER_REGEXSYNTAXTREEBUILDER_H
-#define IUPAC_FSM_PARSER_REGEXSYNTAXTREEBUILDER_H
+#ifndef IUPAC_FSM_PARSER_REGEXTEMPLATECATALOG_H
+#define IUPAC_FSM_PARSER_REGEXTEMPLATECATALOG_H
 
 #include <string>
 #include <map>
@@ -28,11 +28,11 @@ public:
      * Name 'rootNodeName' must be added beforehand.
      * Also adds a terminal symbol to the end of the tree.
      * */
-    RegexSyntaxTree buidRegexSyntaxTree(string rootNodeName);
+    RegexSyntaxTree buildRegexSyntaxTree(string rootNodeName);
 
 private:
     map<string, string> templateList;
 };
 
 
-#endif //IUPAC_FSM_PARSER_REGEXSYNTAXTREEBUILDER_H
+#endif //IUPAC_FSM_PARSER_REGEXTEMPLATECATALOG_H

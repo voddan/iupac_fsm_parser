@@ -10,6 +10,7 @@
 #include "SyntaxTreeNode.h"
 
 using std::set;
+using std::move;
 
 class RegexSyntaxTreeNode : public SyntaxTreeNode {
 public:
@@ -43,49 +44,49 @@ private:
 class Concatination : public RegexSyntaxTreeNode {
 public:
     explicit Concatination(TextPosition originalPosition) :
-            RegexSyntaxTreeNode(".", originalPosition) {}
+            RegexSyntaxTreeNode(".", move(originalPosition)) {}
 };
 
 class EORE : public RegexSyntaxTreeNode {
 public:
     explicit EORE(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("#", originalPosition) {}
+            RegexSyntaxTreeNode("#", move(originalPosition)) {}
 };
 
 class SymbolSet : public RegexSyntaxTreeNode {
 public:
     explicit SymbolSet(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("set", originalPosition) {}
+            RegexSyntaxTreeNode("set", move(originalPosition)) {}
 };
 
 class Group: public RegexSyntaxTreeNode {
 public:
     explicit Group(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("group", originalPosition) {}
+            RegexSyntaxTreeNode("group", move(originalPosition)) {}
 };
 
 class Iteration : public RegexSyntaxTreeNode {
 public:
     explicit Iteration(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("*", originalPosition) {}
+            RegexSyntaxTreeNode("*", move(originalPosition)) {}
 };
 
 class PlusIteration : public RegexSyntaxTreeNode {
 public:
     explicit PlusIteration(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("+", originalPosition) {}
+            RegexSyntaxTreeNode("+", move(originalPosition)) {}
 };
 
 class Optional : public RegexSyntaxTreeNode {
 public:
     explicit Optional(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("?", originalPosition) {}
+            RegexSyntaxTreeNode("?", move(originalPosition)) {}
 };
 
 class Union : public RegexSyntaxTreeNode {
 public:
     explicit Union(TextPosition originalPosition) :
-            RegexSyntaxTreeNode("|", originalPosition) {}
+            RegexSyntaxTreeNode("|", move(originalPosition)) {}
 };
 
 

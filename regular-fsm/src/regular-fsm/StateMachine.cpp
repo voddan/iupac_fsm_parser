@@ -46,7 +46,7 @@ bool StateMachine::State::isFinal() const {
 
 
 StateMachine::Transit::Transit(const State & destination, set<char> charset) :
-        destination(destination), charset(charset) {}
+        destination(destination), charset(move(charset)) {}
 
 StateMachine::Transit::Transit(Transit && other) noexcept :
         destination(other.destination), charset(other.charset) {}

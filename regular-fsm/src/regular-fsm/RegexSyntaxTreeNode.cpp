@@ -8,7 +8,7 @@
 using std::move;
 
 RegexSyntaxTreeNode::RegexSyntaxTreeNode(string nodeClass, TextPosition position) :
-        SyntaxTreeNode(nodeClass, position) {}
+        SyntaxTreeNode(move(nodeClass), move(position)) {}
 
 RegexSyntaxTreeNode::RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept : SyntaxTreeNode(move(other)) {
     nullableAttribute = other.nullableAttribute;
