@@ -15,7 +15,7 @@ using std::vector;
 
 class SyntaxTree : public indigo::NonCopyable {
 public:
-    explicit SyntaxTree(SyntaxTreeNode root);
+    explicit SyntaxTree(const SyntaxTreeNode & root);
     SyntaxTree(SyntaxTree && other) noexcept;
 
 private:
