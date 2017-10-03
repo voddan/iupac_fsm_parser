@@ -10,6 +10,8 @@
 using std::string;
 
 struct TextPosition {
+    TextPosition(const string & text, const int start, const int end) : text(text), start(start), end(end) {}
+
     const string text;
     const int start;
     const int end;

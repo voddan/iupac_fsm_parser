@@ -19,9 +19,9 @@ public:
     SyntaxTreeNode(string nodeClass, TextPosition position);
     SyntaxTreeNode(SyntaxTreeNode && other) noexcept;
 
-    string prettyPrint(int indent = 0);
+    string prettyPrint(int indent = 0) const;
 
-    inline void addChild(SyntaxTreeNode child);
+    void addChild(SyntaxTreeNode child);
 
     inline const vector<SyntaxTreeNode> & getChildren() const {
         return children;

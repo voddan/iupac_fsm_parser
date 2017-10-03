@@ -18,6 +18,8 @@ public:
     explicit SyntaxTree(const SyntaxTreeNode & root);
     SyntaxTree(SyntaxTree && other) noexcept;
 
+    string prettyPrint() const;
+
 private:
     const SyntaxTreeNode root;
 };

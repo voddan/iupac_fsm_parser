@@ -17,7 +17,7 @@ SyntaxTreeNode::SyntaxTreeNode(SyntaxTreeNode && other) noexcept :
     children = move(other.children);
 }
 
-string SyntaxTreeNode::prettyPrint(int indent) {
+string SyntaxTreeNode::prettyPrint(int indent) const {
     std::ostringstream str;
     string indent_str(indent, '\t');
 
@@ -27,7 +27,7 @@ string SyntaxTreeNode::prettyPrint(int indent) {
         for(auto& child: children) {
             str << child.prettyPrint(indent + 1);
         }
-        str << indent_str << "</" << nodeClass << ">";
+        str << indent_str << "</" << nodeClass << ">" << std::endl;
     }
     return str.str();
 }
