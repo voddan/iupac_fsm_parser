@@ -24,8 +24,8 @@ string SyntaxTreeNode::prettyPrint(int indent) {
     str << indent_str << "<" << nodeClass << ": " << position.text << ">" << std::endl;
 
     if(!children.empty()) {
-        for(auto child: children) {
-            str << child->prettyPrint(indent + 1);
+        for(auto& child: children) {
+            str << child.prettyPrint(indent + 1);
         }
         str << indent_str << "</" << nodeClass << ">";
     }
@@ -33,5 +33,5 @@ string SyntaxTreeNode::prettyPrint(int indent) {
 }
 
 void SyntaxTreeNode::addChild(SyntaxTreeNode child) {
-	children.push_back(&child);
+	children.push_back(move(child));
 }

@@ -23,7 +23,7 @@ public:
 
     inline void addChild(SyntaxTreeNode child);
 
-    inline const vector<SyntaxTreeNode *> & getChildren() const {
+    inline const vector<SyntaxTreeNode> & getChildren() const {
         return children;
     }
 
@@ -31,7 +31,7 @@ public:
     const TextPosition position;
 
 private:
-    vector<SyntaxTreeNode *> children;
+    vector<SyntaxTreeNode> children;
 };
 
 

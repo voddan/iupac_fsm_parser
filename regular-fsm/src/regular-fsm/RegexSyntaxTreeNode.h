@@ -17,11 +17,6 @@ public:
     RegexSyntaxTreeNode(string nodeClass, TextPosition position);
     RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept;
 
-//    #pragma ide diagnostic ignored "HidingNonVirtualFunction"
-    inline const vector<RegexSyntaxTreeNode *> & getChildren() const {
-        return (const vector<RegexSyntaxTreeNode *> &) SyntaxTreeNode::getChildren();
-    }
-
     void calculateAttributes();
 
     inline bool getNullableAttribute() const {
