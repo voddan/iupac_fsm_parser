@@ -7,6 +7,8 @@
 
 using std::move;
 
+RegexTemplateCatalog::RegexTemplateCatalog() { }
+
 RegexTemplateCatalog::RegexTemplateCatalog(RegexTemplateCatalog && other) noexcept {
     templateList = move(other.templateList);
 }

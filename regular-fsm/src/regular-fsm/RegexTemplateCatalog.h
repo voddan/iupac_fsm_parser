@@ -19,6 +19,7 @@ using std::map;
  * */
 class RegexTemplateCatalog : public indigo::NonCopyable {
 public:
+    RegexTemplateCatalog();
     RegexTemplateCatalog(RegexTemplateCatalog && other) noexcept;
 
     void addRegexTemplate(string nodeName, string regexTemplate);
