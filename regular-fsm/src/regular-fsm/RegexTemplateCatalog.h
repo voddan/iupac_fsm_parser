@@ -14,8 +14,8 @@ using std::string;
 using std::map;
 
 /**
- * Contains regex tamplaits, basic first.
- * A templaite may use an already addded templait 'myName' with %myName%
+ * Contains regex templates, basic first.
+ * A template may use an already added template 'myName' with %myName%
  * */
 class RegexTemplateCatalog : public indigo::NonCopyable {
 public:

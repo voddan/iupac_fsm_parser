@@ -9,3 +9,5 @@ target_sources(tinyxml PRIVATE
         include/tinyxml.h)
 
 target_include_directories(tinyxml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+target_compile_definitions(tinyxml PUBLIC -DTIXML_USE_STL)
