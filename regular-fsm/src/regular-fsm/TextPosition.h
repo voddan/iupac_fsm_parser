@@ -6,15 +6,35 @@
 #define IUPAC_FSM_PARSER_TEXTPOSITION_H
 
 #include <string>
+#include <base_cpp/exception.h>
+#include <cassert>
 
 using std::string;
 
 struct TextPosition {
-    TextPosition(const string & text, const int start, const int end) : text(text), start(start), end(end) {}
+    TextPosition(const string & text, string::size_type begin, string::size_type end) :
+            text(text), begin(begin), end(end) {
+        assert(text.length() == end - begin);
+    }
+
+    TextPosition(const string & text, string::size_type begin) :
+            TextPosition(text, begin, begin + text.length()) {}
+
+    TextPosition(const string & text) : TextPosition(text, 0) {}
+
+    bool operator==(const TextPosition & other) {
+        return text == other.text &&
+                begin == other.begin &&
+                end == other.end;
+    };
+
+    inline bool empty() {
+        return begin == end;
+    }
 
     const string text;
-    const int start;
-    const int end;
+    const string::size_type begin;
+    const string::size_type end;
 };
 
 
