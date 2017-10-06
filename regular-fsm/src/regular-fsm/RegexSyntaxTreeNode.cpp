@@ -4,6 +4,8 @@
 
 #include "RegexSyntaxTreeNode.h"
 
+#include <bits/unique_ptr.h>
+
 
 using std::move;
 
@@ -18,4 +20,23 @@ RegexSyntaxTreeNode::RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept 
 
 void RegexSyntaxTreeNode::calculateAttributes() {
 
+}
+
+
+RegexSyntaxTreeNode fromTrivialString(TextPosition position) {
+    if(position.empty())
+        return NaN(position.begin);
+
+    Character firstCh(position.text[0], position.begin);
+    std::unique_ptr<RegexSyntaxTreeNode> root(&firstCh);
+
+    auto ch = position.text.begin();
+    auto pos = position.begin;
+    for(ch++, pos++ /* skips the first */; pos != position.end; ch++, pos++) {
+        Character character(*ch, pos);
+        Concatenation concatenation(move(*root.release()), move(character));
+        root.reset(&concatenation);
+    }
+
+    return move(*root.release());
 }

@@ -8,28 +8,126 @@
 
 using std::move;
 
-TEST_CASE("Create simple RegexSyntaxTree, pretty print it") {
-    RegexSyntaxTreeNode n1("tree", TextPosition("root", 0, 3));
-    RegexSyntaxTreeNode n2("leaf", TextPosition("leaf1", 4, 8));
-    RegexSyntaxTreeNode n3("leaf", TextPosition("leaf2", 9, 13));
+TEST_CASE("Creation & pretty printing") {
+    // (ab|c?d+)*e
+    // 01234567890
 
-    CHECK(n1.prettyPrint() == "<tree: root>\n");
-    CHECK(n2.prettyPrint() == "<leaf: leaf1>\n");
-    CHECK(n3.prettyPrint() == "<leaf: leaf2>\n");
+    Character n1('a', 1);
+    Character n2('b', 2);
+    Character n3('c', 4);
+    Character n4('d', 6);
+    Character n5('e', 10);
 
-    n1.addChild(move(n2));
-    n1.addChild(move(n3));
+    Concatenation q1(move(n1), move(n2));  // ab
+    Option q2(move(n3));                   // c?
+    PlusIteration q3(move(n4));            // d+
+    Concatenation q4(move(q2), move(q3));  // c?d+
+    Combination q5(move(q1), move(q4));    // ab|c?d+
+    Group q6(move(q5));                    // (ab|c?d+)
+    Iteration q7(move(q6));                // (ab|c?d+)*
+    Concatenation q8(move(q7), move(n5));  // (ab|c?d+)*e
+
+    SyntaxTree tree(move(q8));
 
 
     const char * treeStr =
-            "<tree: root>\n"
-            "\t<leaf: leaf1>\n"
-            "\t<leaf: leaf2>\n"
-            "</tree>\n";
-
-    CHECK(n1.prettyPrint() == treeStr);
-
-    SyntaxTree tree(move(n1));
+            "<.: (ab|c?d+)*e>\n"
+            "\t<*: (ab|c?d+)*>\n"
+            "\t\t<group: (ab|c?d+)>\n"
+            "\t\t\t<|: ab|c?d+>\n"
+            "\t\t\t\t<.: ab>\n"
+            "\t\t\t\t\t<char: a>\n"
+            "\t\t\t\t\t<char: b>\n"
+            "\t\t\t\t</.>\n"
+            "\t\t\t\t<.: c?d+>\n"
+            "\t\t\t\t\t<?: c?>\n"
+            "\t\t\t\t\t\t<char: c>\n"
+            "\t\t\t\t\t</?>\n"
+            "\t\t\t\t\t<+: d+>\n"
+            "\t\t\t\t\t\t<char: d>\n"
+            "\t\t\t\t\t</+>\n"
+            "\t\t\t\t</.>\n"
+            "\t\t\t</|>\n"
+            "\t\t</group>\n"
+            "\t</*>\n"
+            "\t<char: e>\n"
+            "</.>\n";
 
     CHECK(tree.prettyPrint() == treeStr);
+}
+
+TEST_CASE("A tree with auxiliary nodes") {
+    // |a#
+    // 012
+
+    NaN n1(0);
+    Character n2('a', 1);
+    EORE n3(2);
+
+    Combination q1(move(n1), move(n2));
+    Concatenation q2(move(q1), move(n3));
+
+    RegexSyntaxTree tree(move(q2));
+
+    const char * treeStr =
+            "<.: |a>\n"
+            "\t<|: |a>\n"
+            "\t\t<NaN: >\n"
+            "\t\t<char: a>\n"
+            "\t</|>\n"
+            "\t<#: >\n"
+            "</.>\n";
+
+    CHECK(tree.prettyPrint() == treeStr);
+}
+
+TEST_CASE("Creation from a trivial string") {
+    // (ab|c?d+)*e
+    // 01234567890
+
+    string str("(ab|c?d+)*e");
+    RegexSyntaxTreeNode generated = fromTrivialString(TextPosition(str, 0));
+
+    const char * treeStr =
+            "<.: (ab|c?d+)*e>\n"
+                    "\t<.: (ab|c?d+)*>\n"
+                    "\t\t<.: (ab|c?d+)>\n"
+                    "\t\t\t<.: (ab|c?d+>\n"
+                    "\t\t\t\t<.: (ab|c?d>\n"
+                    "\t\t\t\t\t<.: (ab|c?>\n"
+                    "\t\t\t\t\t\t<.: (ab|c>\n"
+                    "\t\t\t\t\t\t\t<.: (ab|>\n"
+                    "\t\t\t\t\t\t\t\t<.: (ab>\n"
+                    "\t\t\t\t\t\t\t\t\t<.: (a>\n"
+                    "\t\t\t\t\t\t\t\t\t\t<char: (>\n"
+                    "\t\t\t\t\t\t\t\t\t\t<char: a>\n"
+                    "\t\t\t\t\t\t\t\t\t</.>\n"
+                    "\t\t\t\t\t\t\t\t\t<char: b>\n"
+                    "\t\t\t\t\t\t\t\t</.>\n"
+                    "\t\t\t\t\t\t\t\t<char: |>\n"
+                    "\t\t\t\t\t\t\t</.>\n"
+                    "\t\t\t\t\t\t\t<char: c>\n"
+                    "\t\t\t\t\t\t</.>\n"
+                    "\t\t\t\t\t\t<char: ?>\n"
+                    "\t\t\t\t\t</.>\n"
+                    "\t\t\t\t\t<char: d>\n"
+                    "\t\t\t\t</.>\n"
+                    "\t\t\t\t<char: +>\n"
+                    "\t\t\t</.>\n"
+                    "\t\t\t<char: )>\n"
+                    "\t\t</.>\n"
+                    "\t\t<char: *>\n"
+                    "\t</.>\n"
+                    "\t<char: e>\n"
+                    "</.>\n";
+
+    CHECK(generated.prettyPrint() == treeStr);
+}
+
+TEST_CASE("Creation from an empty string") {
+    string str("");
+    RegexSyntaxTreeNode generated = fromTrivialString(TextPosition(str, 0));
+
+    const char * treeStr = "<NaN: >\n";
+    CHECK(generated.prettyPrint() == treeStr);
 }
