@@ -14,7 +14,7 @@ StateMachine::StateMachine(vector<State> states) : states(move(states)) {}
 StateMachine::StateMachine(StateMachine && other) noexcept : states((vector<State> &&) other.states) {}
 
 SyntaxTree StateMachine::parse(string str) const {
-    SyntaxTreeNode root("--", TextPosition{"", 0, 0});
+    SyntaxTreeNode root("--", TextPosition{"", 0});
     SyntaxTree tree(move(root));
     return move(tree);
 }

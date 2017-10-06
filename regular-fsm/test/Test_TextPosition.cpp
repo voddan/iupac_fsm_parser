@@ -8,14 +8,14 @@
 
 using std::move;
 
-TEST_CASE("Initialisation") {
+TEST_CASE("Equality") {
     string str("123456789");
-    TextPosition p1(str);
+    TextPosition p1(str, 0);
     TextPosition p2(str, 0);
-    TextPosition p3(str, 0, str.length());
+    TextPosition p3(str, 1);
 
     CHECK(p1 == p2);
-    CHECK(p2 == p3);
+    CHECK(!(p1 == p3));
 }
 
 TEST_CASE("Emptiness") {

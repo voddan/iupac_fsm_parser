@@ -12,15 +12,8 @@
 using std::string;
 
 struct TextPosition {
-    TextPosition(const string & text, string::size_type begin, string::size_type end) :
-            text(text), begin(begin), end(end) {
-        assert(text.length() == end - begin);
-    }
-
     TextPosition(const string & text, string::size_type begin) :
-            TextPosition(text, begin, begin + text.length()) {}
-
-    TextPosition(const string & text) : TextPosition(text, 0) {}
+            text(text), begin(begin), end(begin + text.length()) {}
 
     bool operator==(const TextPosition & other) {
         return text == other.text &&
