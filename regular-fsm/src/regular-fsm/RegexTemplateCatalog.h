@@ -22,7 +22,21 @@ public:
     RegexTemplateCatalog();
     RegexTemplateCatalog(RegexTemplateCatalog && other) noexcept;
 
+    /**
+     * Supports limited POSIX Extended regularExpressions
+     * Unsupported features:
+     *  - QUOTED_CHAR \^ \. \[ \$ \( \) \| \* \+ \? \{ \\
+     *  - Bracket Expressions
+     *  - Matching ends on a line with `^` and `$`
+     *  - More than one digit in DUP_COUNT
+     * */
     void addRegexTemplate(string nodeName, string regexTemplate);
+
+    /**
+     * A token string is a token or is a `|` separated list of tokens
+     * Characters `.`, `+`, `&`, `,`, `;`, `?`, `*`, `(`, `)`, `[`, `]`, `-`, `{`, `}` do not need escaping
+     * */
+    void addTokenString(string nodeName, string tokenString);
 
     /**
      * Builds a tree with 'rootNodeName' as a root.
@@ -31,8 +45,12 @@ public:
      * */
     RegexSyntaxTree buildRegexSyntaxTree(string rootNodeName);
 
+    string prettyPrint();
+
 private:
-    map<string, string> templateList;
+    map<string, string> templateStrings;
+    map<string, string> tokenStrings;
+    map<string, RegexSyntaxTreeNode> parsedTemplates;
 };
 
 
