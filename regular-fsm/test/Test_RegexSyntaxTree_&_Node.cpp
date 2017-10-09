@@ -31,27 +31,27 @@ TEST_CASE("Creation & pretty printing") {
 
 
     const char * treeStr =
-            "<.: (ab|c?d+)*e>\n"
-            "\t<*: (ab|c?d+)*>\n"
-            "\t\t<group: (ab|c?d+)>\n"
-            "\t\t\t<|: ab|c?d+>\n"
-            "\t\t\t\t<.: ab>\n"
-            "\t\t\t\t\t<char: a>\n"
-            "\t\t\t\t\t<char: b>\n"
-            "\t\t\t\t</.>\n"
-            "\t\t\t\t<.: c?d+>\n"
-            "\t\t\t\t\t<?: c?>\n"
-            "\t\t\t\t\t\t<char: c>\n"
-            "\t\t\t\t\t</?>\n"
-            "\t\t\t\t\t<+: d+>\n"
-            "\t\t\t\t\t\t<char: d>\n"
-            "\t\t\t\t\t</+>\n"
-            "\t\t\t\t</.>\n"
-            "\t\t\t</|>\n"
-            "\t\t</group>\n"
-            "\t</*>\n"
-            "\t<char: e>\n"
-            "</.>\n";
+            "<CAT text=\"(ab|c?d+)*e\">\n"
+            "\t<ITER text=\"(ab|c?d+)*\">\n"
+            "\t\t<GROUP text=\"(ab|c?d+)\">\n"
+            "\t\t\t<COMB text=\"ab|c?d+\">\n"
+            "\t\t\t\t<CAT text=\"ab\">\n"
+            "\t\t\t\t\t<CH text=\"a\"/>\n"
+            "\t\t\t\t\t<CH text=\"b\"/>\n"
+            "\t\t\t\t</CAT>\n"
+            "\t\t\t\t<CAT text=\"c?d+\">\n"
+            "\t\t\t\t\t<OPTION text=\"c?\">\n"
+            "\t\t\t\t\t\t<CH text=\"c\"/>\n"
+            "\t\t\t\t\t</OPTION>\n"
+            "\t\t\t\t\t<PITER text=\"d+\">\n"
+            "\t\t\t\t\t\t<CH text=\"d\"/>\n"
+            "\t\t\t\t\t</PITER>\n"
+            "\t\t\t\t</CAT>\n"
+            "\t\t\t</COMB>\n"
+            "\t\t</GROUP>\n"
+            "\t</ITER>\n"
+            "\t<CH text=\"e\"/>\n"
+            "</CAT>\n";
 
     CHECK(tree.prettyPrint() == treeStr);
 }
@@ -70,13 +70,13 @@ TEST_CASE("A tree with auxiliary nodes") {
     RegexSyntaxTree tree(move(q2));
 
     const char * treeStr =
-            "<.: |a>\n"
-            "\t<|: |a>\n"
-            "\t\t<NaN: >\n"
-            "\t\t<char: a>\n"
-            "\t</|>\n"
-            "\t<#: >\n"
-            "</.>\n";
+            "<CAT text=\"|a\">\n"
+            "\t<COMB text=\"|a\">\n"
+            "\t\t<NAN text=\"\"/>\n"
+            "\t\t<CH text=\"a\"/>\n"
+            "\t</COMB>\n"
+            "\t<END text=\"\"/>\n"
+            "</CAT>\n";
 
     CHECK(tree.prettyPrint() == treeStr);
 }
@@ -89,37 +89,37 @@ TEST_CASE("Creation from a trivial string") {
     RegexSyntaxTreeNode generated = fromTrivialString(TextPosition(str, 0));
 
     const char * treeStr =
-            "<.: (ab|c?d+)*e>\n"
-                    "\t<.: (ab|c?d+)*>\n"
-                    "\t\t<.: (ab|c?d+)>\n"
-                    "\t\t\t<.: (ab|c?d+>\n"
-                    "\t\t\t\t<.: (ab|c?d>\n"
-                    "\t\t\t\t\t<.: (ab|c?>\n"
-                    "\t\t\t\t\t\t<.: (ab|c>\n"
-                    "\t\t\t\t\t\t\t<.: (ab|>\n"
-                    "\t\t\t\t\t\t\t\t<.: (ab>\n"
-                    "\t\t\t\t\t\t\t\t\t<.: (a>\n"
-                    "\t\t\t\t\t\t\t\t\t\t<char: (>\n"
-                    "\t\t\t\t\t\t\t\t\t\t<char: a>\n"
-                    "\t\t\t\t\t\t\t\t\t</.>\n"
-                    "\t\t\t\t\t\t\t\t\t<char: b>\n"
-                    "\t\t\t\t\t\t\t\t</.>\n"
-                    "\t\t\t\t\t\t\t\t<char: |>\n"
-                    "\t\t\t\t\t\t\t</.>\n"
-                    "\t\t\t\t\t\t\t<char: c>\n"
-                    "\t\t\t\t\t\t</.>\n"
-                    "\t\t\t\t\t\t<char: ?>\n"
-                    "\t\t\t\t\t</.>\n"
-                    "\t\t\t\t\t<char: d>\n"
-                    "\t\t\t\t</.>\n"
-                    "\t\t\t\t<char: +>\n"
-                    "\t\t\t</.>\n"
-                    "\t\t\t<char: )>\n"
-                    "\t\t</.>\n"
-                    "\t\t<char: *>\n"
-                    "\t</.>\n"
-                    "\t<char: e>\n"
-                    "</.>\n";
+            "<CAT text=\"(ab|c?d+)*e\">\n"
+            "\t<CAT text=\"(ab|c?d+)*\">\n"
+            "\t\t<CAT text=\"(ab|c?d+)\">\n"
+            "\t\t\t<CAT text=\"(ab|c?d+\">\n"
+            "\t\t\t\t<CAT text=\"(ab|c?d\">\n"
+            "\t\t\t\t\t<CAT text=\"(ab|c?\">\n"
+            "\t\t\t\t\t\t<CAT text=\"(ab|c\">\n"
+            "\t\t\t\t\t\t\t<CAT text=\"(ab|\">\n"
+            "\t\t\t\t\t\t\t\t<CAT text=\"(ab\">\n"
+            "\t\t\t\t\t\t\t\t\t<CAT text=\"(a\">\n"
+            "\t\t\t\t\t\t\t\t\t\t<CH text=\"(\"/>\n"
+            "\t\t\t\t\t\t\t\t\t\t<CH text=\"a\"/>\n"
+            "\t\t\t\t\t\t\t\t\t</CAT>\n"
+            "\t\t\t\t\t\t\t\t\t<CH text=\"b\"/>\n"
+            "\t\t\t\t\t\t\t\t</CAT>\n"
+            "\t\t\t\t\t\t\t\t<CH text=\"|\"/>\n"
+            "\t\t\t\t\t\t\t</CAT>\n"
+            "\t\t\t\t\t\t\t<CH text=\"c\"/>\n"
+            "\t\t\t\t\t\t</CAT>\n"
+            "\t\t\t\t\t\t<CH text=\"?\"/>\n"
+            "\t\t\t\t\t</CAT>\n"
+            "\t\t\t\t\t<CH text=\"d\"/>\n"
+            "\t\t\t\t</CAT>\n"
+            "\t\t\t\t<CH text=\"+\"/>\n"
+            "\t\t\t</CAT>\n"
+            "\t\t\t<CH text=\")\"/>\n"
+            "\t\t</CAT>\n"
+            "\t\t<CH text=\"*\"/>\n"
+            "\t</CAT>\n"
+            "\t<CH text=\"e\"/>\n"
+            "</CAT>\n";
 
     CHECK(generated.prettyPrint() == treeStr);
 }
@@ -128,6 +128,6 @@ TEST_CASE("Creation from an empty string") {
     string str("");
     RegexSyntaxTreeNode generated = fromTrivialString(TextPosition(str, 0));
 
-    const char * treeStr = "<NaN: >\n";
+    const char * treeStr = "<NAN text=\"\"/>\n";
     CHECK(generated.prettyPrint() == treeStr);
 }
