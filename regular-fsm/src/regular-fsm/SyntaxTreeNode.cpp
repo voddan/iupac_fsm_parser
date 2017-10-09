@@ -21,14 +21,19 @@ string SyntaxTreeNode::prettyPrint(int indent) const {
     std::ostringstream str;
     string indent_str(indent, '\t');
 
-    str << indent_str << "<" << nodeClass << ": " << position.text << ">" << std::endl;
+    str << indent_str << "<" << nodeClass << " text=\"" << position.text << "\"";
 
     if(!children.empty()) {
+        str << ">" << std::endl;
+
         for(auto& child: children) {
             str << child.prettyPrint(indent + 1);
         }
         str << indent_str << "</" << nodeClass << ">" << std::endl;
+    } else {
+        str << "/>" << std::endl;
     }
+
     return str.str();
 }
 

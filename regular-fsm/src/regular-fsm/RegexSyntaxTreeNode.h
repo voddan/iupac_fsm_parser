@@ -49,14 +49,14 @@ RegexSyntaxTreeNode fromTrivialString(TextPosition position);
 class NaN : public RegexSyntaxTreeNode {
 public:
     explicit NaN(string::size_type begin) :
-            RegexSyntaxTreeNode("NaN", TextPosition("", begin)) {}
+            RegexSyntaxTreeNode("NAN", TextPosition("", begin)) {}
 };
 
 class Concatenation : public RegexSyntaxTreeNode {
 public:
     explicit Concatenation(RegexSyntaxTreeNode first,
                            RegexSyntaxTreeNode second) :
-            RegexSyntaxTreeNode(".",
+            RegexSyntaxTreeNode("CAT",
                                 TextPosition(first.position.text + second.position.text,
                                              first.position.begin)) {
         addChild(move(first));
@@ -67,25 +67,25 @@ public:
 class Character : public RegexSyntaxTreeNode {
 public:
     explicit Character(char ch, string::size_type begin) :
-            RegexSyntaxTreeNode("char", TextPosition(string(1, ch), begin)) {}
+            RegexSyntaxTreeNode("CH", TextPosition(string(1, ch), begin)) {}
 };
 
-class EORE : public RegexSyntaxTreeNode {
+class END : public RegexSyntaxTreeNode {
 public:
-    explicit EORE(string::size_type begin) :
-            RegexSyntaxTreeNode("#", TextPosition("", begin)) {}
+    explicit END(string::size_type begin) :
+            RegexSyntaxTreeNode("END", TextPosition("", begin)) {}
 };
 
 class Group: public RegexSyntaxTreeNode {
 public:
     Group(string name, RegexSyntaxTreeNode node) :
-            RegexSyntaxTreeNode("%" + name + "%",
+            RegexSyntaxTreeNode(name,
                                 TextPosition("(" + node.position.text + ")", node.position.begin - 1)) {
         addChild(move(node));
     }
 
     Group(RegexSyntaxTreeNode node) :
-            RegexSyntaxTreeNode("group",
+            RegexSyntaxTreeNode("GROUP",
                                 TextPosition("(" + node.position.text + ")", node.position.begin - 1)) {
         addChild(move(node));
     }
@@ -94,7 +94,7 @@ public:
 class Iteration : public RegexSyntaxTreeNode {
 public:
     explicit Iteration(RegexSyntaxTreeNode node) :
-            RegexSyntaxTreeNode("*", TextPosition(node.position.text + "*",
+            RegexSyntaxTreeNode("ITER", TextPosition(node.position.text + "*",
                                                   node.position.begin)) {
         addChild(move(node));
     }
@@ -103,7 +103,7 @@ public:
 class PlusIteration : public RegexSyntaxTreeNode {
 public:
     explicit PlusIteration(RegexSyntaxTreeNode node) :
-            RegexSyntaxTreeNode("+", TextPosition(node.position.text + "+",
+            RegexSyntaxTreeNode("PITER", TextPosition(node.position.text + "+",
                                                   node.position.begin)) {
         addChild(move(node));
     }
@@ -112,7 +112,7 @@ public:
 class Option : public RegexSyntaxTreeNode {
 public:
     explicit Option(RegexSyntaxTreeNode node) :
-            RegexSyntaxTreeNode("?", TextPosition(node.position.text + "?",
+            RegexSyntaxTreeNode("OPTION", TextPosition(node.position.text + "?",
                                                   node.position.begin)) {
         addChild(move(node));
     }
@@ -122,7 +122,7 @@ class Combination : public RegexSyntaxTreeNode {
 public:
     explicit Combination(RegexSyntaxTreeNode first,
                          RegexSyntaxTreeNode second) :
-            RegexSyntaxTreeNode("|",
+            RegexSyntaxTreeNode("COMB",
                                 TextPosition(first.position.text + "|" + second.position.text,
                                              first.position.begin)) {
         addChild(move(first));

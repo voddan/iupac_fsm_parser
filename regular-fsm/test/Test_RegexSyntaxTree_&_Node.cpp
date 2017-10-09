@@ -62,7 +62,7 @@ TEST_CASE("A tree with auxiliary nodes") {
 
     NaN n1(0);
     Character n2('a', 1);
-    EORE n3(2);
+    END n3(2);
 
     Combination q1(move(n1), move(n2));
     Concatenation q2(move(q1), move(n3));

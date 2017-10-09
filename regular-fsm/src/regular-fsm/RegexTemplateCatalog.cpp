@@ -81,30 +81,34 @@ string RegexTemplateCatalog::prettyPrint() {
         string name = pair.first;
         string tokenString = pair.second;
 
-        str << "%" << name << "% : " << tokenString << endl;
+        str << "<" << name << " tokenString=\"" << tokenString << "\">" << endl;
 
         auto iter = parsedTemplates.find(name);
         if(iter != parsedTemplates.end()) {
             RegexSyntaxTreeNode & parsed = iter->second;
             str << parsed.prettyPrint(1);
         } else {
-            str << "\tERROR" << endl;
+            str << "\t<ERROR/>" << endl;
         }
+
+        str << "</" << name << ">" << endl;
     }
 
     for(auto& pair : templateStrings) {
         string name = pair.first;
         string templateString = pair.second;
 
-        str << "%" << name << "% : " << templateString << endl;
+        str << "<" << name << " templateString=\"" << templateString << "\">" << endl;
 
         auto iter = parsedTemplates.find(name);
         if(iter != parsedTemplates.end()) {
             RegexSyntaxTreeNode & parsed = iter->second;
             str << parsed.prettyPrint(1);
         } else {
-            str << "\tERROR" << endl;
+            str << "\t<ERROR/>" << endl;
         }
+
+        str << "</" << name << ">" << endl;
     }
 
     return str.str();
