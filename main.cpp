@@ -4,7 +4,10 @@
 #include <memory>
 #include <vector>
 #include <regex>
+#include <memory>
+#include <utility>
 #include <base_cpp/non_copyable.h>
+#include <regular-fsm/RegexSyntaxTreeNode.h>
 
 
 void print_all_tokens_from_xml_files() ;
@@ -15,32 +18,56 @@ using std::move;
 using std::cout;
 using std::endl;
 
+class A : public indigo::NonCopyable {
+public:
+    A(string name) : name(name) {}
+
+    ~A() {
+        cout << "destructor A[" << name << " : " << destructions++ << "]\n" ;
+    }
+
+    string str() {
+        return "A[" + name + "]";
+    }
+
+    const string name;
+    int destructions = 0;
+};
+
+class B : public A {
+public:
+    B(string name) : A(name) {};
+};
+
+RegexSyntaxTreeNode testfromTrivialString(TextPosition position) {
+    if(position.empty())
+        return NaN(position.begin);
+
+    ;
+    std::unique_ptr<RegexSyntaxTreeNode> root(new Character(position.text[0], position.begin));
+
+    auto ch = position.text.begin();
+    auto pos = position.begin;
+    for(ch++, pos++; pos != position.end; ch++, pos++) {
+        Character character(*ch, pos);
+        root.reset(new Concatenation(move(*root.release()), move(character)));
+    }
+
+    return move(*root.release());
+}
+
 int main() {
-//    string tokenString("l-tartrate|(l*)-tartrate|l(+?)-tartrate|l-(+)-tartrate|l.tartrat|(l)-ta rtrat|l( +)-tartrat|l-(+)-tartrat");
-    string tokenString("l-tartrate|");
-//    string tokenString("");
+    string str("(ab|c?d+)*e");
+    RegexSyntaxTreeNode generated = testfromTrivialString(TextPosition(str, 0));
 
-    std::regex firstRegex("([^|]+)\\|?");
-    std::smatch firstMatches;
+   /* std::unique_ptr<A> ptr(new B("b"));
 
-    if(std::regex_search(tokenString, firstMatches, firstRegex)) {
-        auto match = firstMatches[1];
-        cout << match << endl;
+    if(true) {
+        ptr.reset(new B("d"));
+        cout << ptr->str() << endl;
     }
 
-    std::regex regex("\\|([^|]+)");
-    std::smatch matches;
-
-    string::const_iterator begin = tokenString.begin();
-    const string::const_iterator end = tokenString.end();
-
-    while(std::regex_search(begin, end, matches, regex)) {
-        auto match = matches[1];
-        cout << match << endl;
-        begin = match.second;
-    }
-
-
+    cout << ptr->str() << endl;*/
 
     return 0;
 }
