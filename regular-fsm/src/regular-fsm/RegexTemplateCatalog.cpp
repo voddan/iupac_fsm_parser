@@ -6,6 +6,7 @@
 
 #include <sstream>
 #include <regex>
+#include <memory>
 #include <base_cpp/exception.h>
 
 
@@ -33,10 +34,9 @@ void RegexTemplateCatalog::addTokenString(string nodeName, string tokenString) {
     if(std::regex_search(tokenString, firstMatches, firstRegex)) {
         auto match = firstMatches[1];
         RegexSyntaxTreeNode node = fromTrivialString(TextPosition(match, 0));
-        root.reset(&node);
+        root.reset(new RegexSyntaxTreeNode(move(node)));
     } else {
-        NaN nan(0);
-        root.reset(&nan);
+        root.reset(new NaN(0));
     }
 
     std::regex regex("\\|([^|]+)");
@@ -48,8 +48,7 @@ void RegexTemplateCatalog::addTokenString(string nodeName, string tokenString) {
     while(std::regex_search(begin, end, matches, regex)) {
         auto match = matches[1];
         RegexSyntaxTreeNode node = fromTrivialString(TextPosition(match, 0));
-        Combination combination(move(*root.release()), move(node));
-        root.reset(&combination);
+        root.reset(new Combination(move(*root.release()), move(node)));
         begin = match.second;  // shifts the search to the next match
     }
 
