@@ -8,6 +8,7 @@
 #include <regex>
 #include <memory>
 #include <base_cpp/exception.h>
+#include "RegexParsers.h"
 
 
 using std::move;
@@ -22,7 +23,71 @@ RegexTemplateCatalog::RegexTemplateCatalog(RegexTemplateCatalog && other) noexce
     parsedTemplates = move(other.parsedTemplates);
 }
 
+/**
+ * Grammar used:
+ *
+ * extended_reg_exp   -> ERE_branch .
+ * extended_reg_exp   -> extended_reg_exp `|` ERE_branch .
+ *
+ * ERE_branch         -> ERE_expression .
+ * ERE_branch         -> ERE_branch ERE_expression .
+ *
+ * ERE_expression     -> ORD_CHAR .
+ * ERE_expression     -> `(` extended_reg_exp `)` .
+ * ERE_expression     -> `%` template_name `%` .
+ * ERE_expression     -> ORD_CHAR ERE_dupl_symbol.
+ * ERE_expression     -> `(` extended_reg_exp `)` ERE_dupl_symbol.
+ * ERE_expression     -> `%` template_name `%` ERE_dupl_symbol.
+ *
+ * ERE_dupl_symbol    -> `*` .
+ * ERE_dupl_symbol    -> `+` .
+ * ERE_dupl_symbol    -> `?` .
+ * ERE_dupl_symbol    -> `{` DUP_COUNT               `}` .
+ * ERE_dupl_symbol    -> `{` DUP_COUNT `,`           `}` .
+ * ERE_dupl_symbol    -> `{` DUP_COUNT `,` DUP_COUNT `}` .
+ * */
 void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplate) {
+    // 1(2|34)*5
+
+    "([^|]+) ( \\|([^|]+) )*";  // extended_reg_exp
+    "( [a-zA-Z] | \\(.*\\) ) ([*+?] | {\\d+ , (\\d+)?})?"; // ERE_expression
+    "[*+?]|{\\s*\\d+\\s*,\\s*(\\d+)?\\s*}";
+
+    const vector<TextPosition> & branches = split('|', TextPosition(regexTemplate, 0));
+
+    for(auto& branch : branches) {
+        //               01   2  2           13       4  4 3 0
+        std::regex regex("(\\((.*)\\)|[^(){}])([*+?]|{(.*)})?");
+        std::smatch matches;
+
+        const string::const_iterator begin = branch.text.begin();
+        const string::const_iterator end = branch.text.end();
+        auto iter = begin;
+
+        while(std::regex_search(iter, end, matches, regex)) {
+            auto match1 = matches[1];
+            auto match2 = matches[2];
+
+            if(match2.matched)
+               ;// (.*)
+            else
+                Character ch(*match1.first, iter - begin + branch.begin);
+
+            auto match3 = matches[1];
+            auto match4 = matches[2];
+
+            if(match3.matched) {
+                if(match4.matched)
+                    ;// {.*}
+                else {
+                    char ch = *match1.first;
+                }
+            }
+        }
+    }
+    
+
+
     templateStrings[nodeName] = move(regexTemplate);
 }
 
@@ -98,32 +163,4 @@ string RegexTemplateCatalog::prettyPrint() {
     }
 
     return str.str();
-}
-
-vector<TextPosition> split(char delimiter, TextPosition position) {
-    string D(1, delimiter);
-    vector<TextPosition> results;
-
-    std::regex firstRegex("([^" + D + "]*)[" + D + "]?");
-    std::smatch firstMatches;
-
-    if(std::regex_search(position.text, firstMatches, firstRegex)) {
-        auto match = firstMatches[1];
-        results.emplace_back(match, 0);
-    }
-
-    std::regex regex("[" + D + "]([^" + D +  "]*)");
-    std::smatch matches;
-
-    const string::const_iterator begin = position.text.begin();
-    const string::const_iterator end = position.text.end();
-    auto iter = begin;
-
-    while(std::regex_search(iter, end, matches, regex)) {
-        auto match = matches[1];
-        results.emplace_back(match, match.first - begin);
-        iter = match.second;  // shifts the search to the next match
-    }
-
-    return results;
 }

@@ -36,13 +36,6 @@ private:
 };
 
 /**
- * Parses a part of a template, ignoring all special characters
- * @param position - non-empty text position
- * @returns - syntax node with children
- * */
-RegexSyntaxTreeNode fromTrivialString(TextPosition position);
-
-/**
  * "Not a Node"
  * Corresponds to an empty string
  * */
@@ -145,7 +138,7 @@ public:
     }
 
     explicit Count(RegexSyntaxTreeNode node, TextPosition countPosition, int minCount) :
-            Count(node, countPosition, minCount, -1) {}
+            Count(move(node), countPosition, minCount, -1) {}
 
     inline bool unlimited() {
         return maxCount == -1;

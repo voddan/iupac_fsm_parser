@@ -5,6 +5,7 @@
 #include <catch.hpp>
 #include <iostream>
 #include <regular-fsm/RegexSyntaxTree.h>
+#include <regular-fsm/RegexParsers.h>
 
 using std::move;
 
