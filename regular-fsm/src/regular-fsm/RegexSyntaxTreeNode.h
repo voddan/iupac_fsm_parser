@@ -130,5 +130,30 @@ public:
     }
 };
 
+/**
+ * expr{a}      is represented as Count{a, a}
+ * expr{a,}     is represented as Count{a}
+ * expr{a, b}   is represented as Count{a, b}
+ * */
+class Count : public RegexSyntaxTreeNode {
+public:
+    explicit Count(RegexSyntaxTreeNode node, TextPosition countPosition, int minCount, int maxCount) :
+            minCount(minCount), maxCount(maxCount),
+            RegexSyntaxTreeNode("COUNT", TextPosition(node.position.text + countPosition.text,
+                                                       node.position.begin)) {
+        addChild(move(node));
+    }
+
+    explicit Count(RegexSyntaxTreeNode node, TextPosition countPosition, int minCount) :
+            Count(node, countPosition, minCount, -1) {}
+
+    inline bool unlimited() {
+        return maxCount == -1;
+    }
+
+
+    const int minCount;
+    const int maxCount;
+};
 
 #endif //IUPAC_FSM_PARSER_REGEXSYNTAXTREENODE_H
