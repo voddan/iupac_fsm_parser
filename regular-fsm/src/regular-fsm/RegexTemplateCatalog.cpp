@@ -47,48 +47,12 @@ RegexTemplateCatalog::RegexTemplateCatalog(RegexTemplateCatalog && other) noexce
  * ERE_dupl_symbol    -> `{` DUP_COUNT `,` DUP_COUNT `}` .
  * */
 void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplate) {
-    // 1(2|34)*5
-
-    "([^|]+) ( \\|([^|]+) )*";  // extended_reg_exp
-    "( [a-zA-Z] | \\(.*\\) ) ([*+?] | {\\d+ , (\\d+)?})?"; // ERE_expression
-    "[*+?]|{\\s*\\d+\\s*,\\s*(\\d+)?\\s*}";
-
-    const vector<TextPosition> & branches = split('|', TextPosition(regexTemplate, 0));
-
-    for(auto& branch : branches) {
-        //               01   2  2           13       4  4 3 0
-        std::regex regex("(\\((.*)\\)|[^(){}])([*+?]|{(.*)})?");
-        std::smatch matches;
-
-        const string::const_iterator begin = branch.text.begin();
-        const string::const_iterator end = branch.text.end();
-        auto iter = begin;
-
-        while(std::regex_search(iter, end, matches, regex)) {
-            auto match1 = matches[1];
-            auto match2 = matches[2];
-
-            if(match2.matched)
-               ;// (.*)
-            else
-                Character ch(*match1.first, iter - begin + branch.begin);
-
-            auto match3 = matches[1];
-            auto match4 = matches[2];
-
-            if(match3.matched) {
-                if(match4.matched)
-                    ;// {.*}
-                else {
-                    char ch = *match1.first;
-                }
-            }
-        }
-    }
-    
-
+    auto node = parse_extended_reg_exp(TextPosition(regexTemplate, 0));
 
     templateStrings[nodeName] = move(regexTemplate);
+
+    Group group(nodeName, move(node));
+    parsedTemplates.insert(std::pair<string, RegexSyntaxTreeNode>(nodeName, move(group)));
 }
 
 void RegexTemplateCatalog::addTokenString(string nodeName, string tokenString) {
@@ -96,7 +60,7 @@ void RegexTemplateCatalog::addTokenString(string nodeName, string tokenString) {
 
     std::unique_ptr<RegexSyntaxTreeNode> root;
     for(auto& branch : branches) {
-        RegexSyntaxTreeNode node = fromTrivialString(branch);
+        RegexSyntaxTreeNode node = parse_trivial_string(branch);
         if(root)
             root.reset(new Combination(move(*root.release()), move(node)));
         else

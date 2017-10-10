@@ -87,7 +87,7 @@ TEST_CASE("Creation from a trivial string") {
     // 01234567890
 
     string str("(ab|c?d+)*e");
-    RegexSyntaxTreeNode generated = fromTrivialString(TextPosition(str, 0));
+    RegexSyntaxTreeNode generated = parse_trivial_string(TextPosition(str, 0));
 
     const char * treeStr =
             "<CAT text=\"(ab|c?d+)*e\">\n"
@@ -127,7 +127,7 @@ TEST_CASE("Creation from a trivial string") {
 
 TEST_CASE("Creation from an empty string") {
     string str("");
-    RegexSyntaxTreeNode generated = fromTrivialString(TextPosition(str, 0));
+    RegexSyntaxTreeNode generated = parse_trivial_string(TextPosition(str, 0));
 
     const char * treeStr = "<NAN text=\"\"/>\n";
     CHECK(generated.prettyPrint() == treeStr);

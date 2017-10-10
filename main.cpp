@@ -8,6 +8,7 @@
 #include <utility>
 #include <base_cpp/non_copyable.h>
 #include <regular-fsm/RegexSyntaxTreeNode.h>
+#include <regular-fsm/RegexTemplateCatalog.h>
 
 
 void print_all_tokens_from_xml_files() ;
@@ -17,27 +18,6 @@ using std::vector;
 using std::move;
 using std::cout;
 using std::endl;
-
-class A : public indigo::NonCopyable {
-public:
-    A(string name) : name(name) {}
-
-    ~A() {
-        cout << "destructor A[" << name << " : " << destructions++ << "]\n" ;
-    }
-
-    string str() {
-        return "A[" + name + "]";
-    }
-
-    const string name;
-    int destructions = 0;
-};
-
-class B : public A {
-public:
-    B(string name) : A(name) {};
-};
 
 RegexSyntaxTreeNode testfromTrivialString(TextPosition position) {
     if(position.empty())
@@ -58,16 +38,11 @@ RegexSyntaxTreeNode testfromTrivialString(TextPosition position) {
 
 int main() {
     string str("(ab|c?d+)*e");
-    RegexSyntaxTreeNode generated = testfromTrivialString(TextPosition(str, 0));
 
-   /* std::unique_ptr<A> ptr(new B("b"));
+    RegexTemplateCatalog catalog;
+    catalog.addRegexTemplate("regex", "1(2|34)*5");
 
-    if(true) {
-        ptr.reset(new B("d"));
-        cout << ptr->str() << endl;
-    }
-
-    cout << ptr->str() << endl;*/
+    std::cout << catalog.prettyPrint();
 
     return 0;
 }

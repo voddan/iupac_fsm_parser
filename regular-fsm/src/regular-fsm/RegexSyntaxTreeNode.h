@@ -84,6 +84,13 @@ public:
     }
 };
 
+class Template: public RegexSyntaxTreeNode {
+public:
+    Template(TextPosition namePosition) :
+            RegexSyntaxTreeNode(namePosition.text,
+                                TextPosition("%" + namePosition.text + "%", namePosition.begin - 1)) {}
+};
+
 class Iteration : public RegexSyntaxTreeNode {
 public:
     explicit Iteration(RegexSyntaxTreeNode node) :
