@@ -92,39 +92,43 @@ RegexSyntaxTree RegexTemplateCatalog::buildRegexSyntaxTree(string rootNodeName) 
 string RegexTemplateCatalog::prettyPrint() {
     std::ostringstream str;
 
+    str << "<catalog>" << endl;
+
     for(auto& pair : tokenStrings) {
         string name = pair.first;
         string tokenString = pair.second;
 
-        str << "<" << name << " tokenString=\"" << tokenString << "\">" << endl;
+        str << "\t<" << name << " tokenString=\"" << tokenString << "\">" << endl;
 
         auto iter = parsedTemplates.find(name);
         if(iter != parsedTemplates.end()) {
             RegexSyntaxTreeNode & parsed = iter->second;
-            str << parsed.prettyPrint(1);
+            str << parsed.prettyPrint(2);
         } else {
-            str << "\t<ERROR/>" << endl;
+            str << "\t\t<ERROR/>" << endl;
         }
 
-        str << "</" << name << ">" << endl;
+        str << "\t</" << name << ">" << endl;
     }
 
     for(auto& pair : templateStrings) {
         string name = pair.first;
         string templateString = pair.second;
 
-        str << "<" << name << " templateString=\"" << templateString << "\">" << endl;
+        str << "\t<" << name << " templateString=\"" << templateString << "\">" << endl;
 
         auto iter = parsedTemplates.find(name);
         if(iter != parsedTemplates.end()) {
             RegexSyntaxTreeNode & parsed = iter->second;
-            str << parsed.prettyPrint(1);
+            str << parsed.prettyPrint(2);
         } else {
-            str << "\t<ERROR/>" << endl;
+            str << "\t\t<ERROR/>" << endl;
         }
 
-        str << "</" << name << ">" << endl;
+        str << "\t</" << name << ">" << endl;
     }
+
+    str << "</catalog>" << endl;
 
     return str.str();
 }
