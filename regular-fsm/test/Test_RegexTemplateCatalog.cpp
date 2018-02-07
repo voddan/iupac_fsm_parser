@@ -2,11 +2,11 @@
 // Created by Daniil_Vodopian on 10/3/2017.
 //
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <regular-fsm/RegexTemplateCatalog.h>
 
-TEST_CASE("Parse one token string, one token") {
+TEST(RegexTemplateCatalog, parse_one_token_string_one_token) {
     RegexTemplateCatalog catalog;
     catalog.addTokenString("chemical", "H2O");
 
@@ -25,10 +25,10 @@ TEST_CASE("Parse one token string, one token") {
             "\t</chemical>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Parse one token string, multiple tokens") {
+TEST(RegexTemplateCatalog, parse_one_token_string_multiple_tokens) {
     RegexTemplateCatalog catalog;
     catalog.addTokenString("chemical", "l-tartrate|(l*)-tartrate|l(+?)-tartrate|l-(+)-tartrate|l.tartrat|(l)-ta rtrat|l( +)-tartrat");
 
@@ -293,10 +293,10 @@ TEST_CASE("Parse one token string, multiple tokens") {
             "\t</chemical>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Parse an empty token string") {
+TEST(RegexTemplateCatalog, parse_an_empty_token_string) {
     RegexTemplateCatalog catalog;
     catalog.addTokenString("chemical", "");
 
@@ -309,10 +309,10 @@ TEST_CASE("Parse an empty token string") {
             "\t</chemical>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Parse several token strings") {
+TEST(RegexTemplateCatalog, parse_several_token_strings) {
     RegexTemplateCatalog catalog;
     catalog.addTokenString("water", "H20|dihydrogen monoxide|hydroxyl acid");
     catalog.addTokenString("chemical", "l-tartrate|(l*)-tartrate");
@@ -499,10 +499,10 @@ TEST_CASE("Parse several token strings") {
         "\t</water>\n"
         "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Parse one regex") {
+TEST(RegexTemplateCatalog, parse_one_regex) {
     RegexTemplateCatalog catalog;
     catalog.addRegexTemplate("regex", "1(2|34)*5");
 
@@ -529,10 +529,10 @@ TEST_CASE("Parse one regex") {
             "\t</regex>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Parse an empty regex") {
+TEST(RegexTemplateCatalog, parse_an_empty_regex) {
     RegexTemplateCatalog catalog;
     catalog.addRegexTemplate("regex", "");
 
@@ -545,10 +545,10 @@ TEST_CASE("Parse an empty regex") {
             "\t</regex>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Parse token strings and regex templates") {
+TEST(RegexTemplateCatalog, parse_token_strings_and_regex_templates) {
     RegexTemplateCatalog catalog;
     catalog.addTokenString("water", "H20|dihydrogen monoxide|hydroxyl acid");
     catalog.addRegexTemplate("regex", "1(2|34)*5");
@@ -706,10 +706,10 @@ TEST_CASE("Parse token strings and regex templates") {
             "\t</template>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Substituting one template") {
+TEST(RegexTemplateCatalog, substituting_one_template) {
     RegexTemplateCatalog catalog;
     catalog.addRegexTemplate("water", "H2O");
     catalog.addRegexTemplate("mater", "CO2%water%CO2");
@@ -752,10 +752,10 @@ TEST_CASE("Substituting one template") {
             "\t</water>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Substituting one token list into one template") {
+TEST(RegexTemplateCatalog, substituting_one_token_list_into_one_template) {
     RegexTemplateCatalog catalog;
     catalog.addTokenString("water", "H20|dihydrogen monoxide|hydroxyl acid");
     catalog.addRegexTemplate("regex", "1(2|3%water%4)*5");
@@ -893,10 +893,10 @@ TEST_CASE("Substituting one token list into one template") {
             "\t</regex>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }
 
-TEST_CASE("Substituting several templates") {
+TEST(RegexTemplateCatalog, substituting_several_templates) {
     RegexTemplateCatalog catalog;
     catalog.addRegexTemplate("oxygen", "O");
     catalog.addRegexTemplate("water", "H2%oxygen%");
@@ -954,5 +954,5 @@ TEST_CASE("Substituting several templates") {
             "\t</water>\n"
             "</catalog>\n";
 
-    CHECK(catalog.prettyPrint() == catalogStr);
+    EXPECT_EQ(catalogStr, catalog.prettyPrint());
 }

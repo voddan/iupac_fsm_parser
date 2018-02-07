@@ -2,20 +2,20 @@
 // Created by Daniil_Vodopian on 10/3/2017.
 //
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <regular-fsm/SyntaxTree.h>
 
 using std::move;
 
-TEST_CASE("Create simple SyntaxTree, pretty print it") {
+TEST(SyntaxTreeAndNode, create_simple_SyntaxTree_and_pretty_print_it) {
     SyntaxTreeNode n1("tree", TextPosition("root", 0));
     SyntaxTreeNode n2("leaf", TextPosition("leaf1", 4));
     SyntaxTreeNode n3("leaf", TextPosition("leaf2", 9));
 
-    CHECK(n1.prettyPrint() == "<tree text=\"root\"/>\n");
-    CHECK(n2.prettyPrint() == "<leaf text=\"leaf1\"/>\n");
-    CHECK(n3.prettyPrint() == "<leaf text=\"leaf2\"/>\n");
+    EXPECT_EQ("<tree text=\"root\"/>\n", n1.prettyPrint());
+    EXPECT_EQ("<leaf text=\"leaf1\"/>\n", n2.prettyPrint());
+    EXPECT_EQ("<leaf text=\"leaf2\"/>\n", n3.prettyPrint());
 
     n1.addChild(move(n2));
     n1.addChild(move(n3));
@@ -27,9 +27,9 @@ TEST_CASE("Create simple SyntaxTree, pretty print it") {
             "\t<leaf text=\"leaf2\"/>\n"
             "</tree>\n";
 
-    CHECK(n1.prettyPrint() == treeStr);
+    EXPECT_EQ(treeStr, n1.prettyPrint());
 
     SyntaxTree tree(move(n1));
 
-    CHECK(tree.prettyPrint() == treeStr);
+    EXPECT_EQ(treeStr, tree.prettyPrint());
 }

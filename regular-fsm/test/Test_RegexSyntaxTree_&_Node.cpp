@@ -2,14 +2,14 @@
 // Created by Daniil_Vodopian on 10/3/2017.
 //
 
-#include <catch.hpp>
+#include <gtest/gtest.h>
 #include <iostream>
 #include <regular-fsm/RegexSyntaxTree.h>
 #include <regular-fsm/RegexParsers.h>
 
 using std::move;
 
-TEST_CASE("Creation & pretty printing") {
+TEST(RegexSyntaxTree_and_Node, creation_and_pretty_printing) {
     // (ab|c?d+)*e
     // 01234567890
 
@@ -54,10 +54,10 @@ TEST_CASE("Creation & pretty printing") {
             "\t<CH text=\"e\"/>\n"
             "</CAT>\n";
 
-    CHECK(tree.prettyPrint() == treeStr);
+    EXPECT_EQ(treeStr, tree.prettyPrint());
 }
 
-TEST_CASE("A tree with auxiliary nodes") {
+TEST(RegexSyntaxTree_and_Node, a_tree_with_auxiliary_nodes) {
     // |a#
     // 012
 
@@ -79,10 +79,10 @@ TEST_CASE("A tree with auxiliary nodes") {
             "\t<END text=\"\"/>\n"
             "</CAT>\n";
 
-    CHECK(tree.prettyPrint() == treeStr);
+    EXPECT_EQ(treeStr, tree.prettyPrint());
 }
 
-TEST_CASE("Creation from a trivial string") {
+TEST(RegexSyntaxTree_and_Node, creation_from_a_trivial_string) {
     // (ab|c?d+)*e
     // 01234567890
 
@@ -122,13 +122,13 @@ TEST_CASE("Creation from a trivial string") {
             "\t<CH text=\"e\"/>\n"
             "</CAT>\n";
 
-    CHECK(generated.prettyPrint() == treeStr);
+    EXPECT_EQ(treeStr, generated.prettyPrint());
 }
 
-TEST_CASE("Creation from an empty string") {
+TEST(RegexSyntaxTree_and_Node, creation_from_an_empty_string) {
     string str("");
     RegexSyntaxTreeNode generated = parse_trivial_string(TextPosition(str, 0));
 
     const char * treeStr = "<NAN text=\"\"/>\n";
-    CHECK(generated.prettyPrint() == treeStr);
+    EXPECT_EQ(treeStr, generated.prettyPrint());
 }
