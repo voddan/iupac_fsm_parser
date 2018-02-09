@@ -18,6 +18,21 @@ Some problems that make parsing an arbitrary IUPAC name difficult:
 - Often IUPAC name omit a part of information if it can be devised from the properties of the atoms
 
 
+## White Papers & Sources
+
+The ${ROOT}/docs directory contains some relevant white papers about IUPAC parsing collected from the web.
+
+[Brecher, 1999, "Name=Struct, A Practical Approach"](docs/Brecher-1999-Name=Struct_A Practical_Approach.pdf)
+
+[CookeFox, 1989, "Computer translation of IUPAC"](docs/CookeFox-1989-Computer_translation_of_IUPAC.pdf)
+
+[Kirby, 1991, "Semiautomatic Name Correction"](docs/Kirby-1991-Semiautomatic Name Correction.pdf)
+
+[Lowe, 2011, "OPSIN, an Open Source Solution"](docs/Lowe-2011-OPSIN an Open Source Solution.pdf)
+
+[Lowe, 2012, "Extraction of Chemical Structures"](docs/Lowe-2012-Extraction-of-Chemical-Structures.pdf)
+
+
 ## General Plan of Development
 
 
