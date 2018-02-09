@@ -22,15 +22,25 @@ Some problems that make parsing an arbitrary IUPAC name difficult:
 
 The ${ROOT}/docs directory contains some relevant white papers about IUPAC parsing collected from the web.
 
-[Brecher, 1999, "Name=Struct, A Practical Approach"](docs/Brecher-1999-Name=Struct_A Practical_Approach.pdf)
+- [Brecher, 1999, "Name=Struct, A Practical Approach"](docs/Brecher-1999-Name=Struct_A Practical_Approach.pdf)
 
-[CookeFox, 1989, "Computer translation of IUPAC"](docs/CookeFox-1989-Computer_translation_of_IUPAC.pdf)
+  - A high-level description of the ChemDraw parser
 
-[Kirby, 1991, "Semiautomatic Name Correction"](docs/Kirby-1991-Semiautomatic Name Correction.pdf)
+- [CookeFox, 1989, "Computer translation of IUPAC"](docs/CookeFox-1989-Computer_translation_of_IUPAC.pdf)
 
-[Lowe, 2011, "OPSIN, an Open Source Solution"](docs/Lowe-2011-OPSIN an Open Source Solution.pdf)
+  - A detailed explanation of grammar-based IUPAC parsing in 5 parts + an example formal IUPAC grammar
 
-[Lowe, 2012, "Extraction of Chemical Structures"](docs/Lowe-2012-Extraction-of-Chemical-Structures.pdf)
+- [Kirby, 1991, "Semiautomatic Name Correction"](docs/Kirby-1991-Semiautomatic Name Correction.pdf)
+
+  - An approach to parsing IUPAC names with errors
+
+- [Lowe, 2011, "OPSIN, an Open Source Solution"](docs/Lowe-2011-OPSIN an Open Source Solution.pdf)
+
+  - High-level description of the OPSIN library
+
+- [Lowe, 2012, "Extraction of Chemical Structures"](docs/Lowe-2012-Extraction-of-Chemical-Structures.pdf)
+
+  - The most detailed description of the OPSIN library
 
 
 ## General Plan of Development
