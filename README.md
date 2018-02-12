@@ -88,4 +88,19 @@ This project is a standard CMake project, so now surprises are here. Note that i
 - googletest
   - A testing framework by Google. Should be downloaded separately (see the [Build](README.md#build) section)
 
-##
+## Modules and Classes
+
+Here is a brief overview of main modules and class of the current implementation:
+
+### regular-fsm
+
+Module contains a Finite State Machine (a.k.a. FSA) to represent a regular grammar. Should be used to parse the XML configs and compile a FSA to parse IUPAC syntax into a syntax tree.
+
+`SyntaxTree` - an abstract syntax tree consisting of nodes `SyntaxTreeNode` 
+`RegexSyntaxTree` - an implementation of `SyntaxTree` consisting of nodes `RegexSyntaxTreeNode` 
+
+`RegexTemplaitCatalog` - a template engine which can assemble parsed trees `RegexSyntaxTree` into one syntax tree without template markers
+
+`StateMachine` - a FSA which can parse a `string` into a `SyntaxTree`. Can be build from a`RegexSyntaxTree`
+
+`TextPosition` - a helper struct to encapsulate a text position in the input text (and possibly provide a hepful error message if the syntax is incorrect) 
