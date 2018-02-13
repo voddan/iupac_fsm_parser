@@ -132,3 +132,50 @@ TEST(RegexSyntaxTree_and_Node, creation_from_an_empty_string) {
     const char * treeStr = "<NAN text=\"\"/>\n";
     EXPECT_EQ(treeStr, generated.prettyPrint());
 }
+
+TEST(RegexSyntaxTree_and_Node, calculating_attributes) {
+    // (a|b)*abb#
+    // 0123456789
+
+    Character n1('a', 1);
+    Character n2('b', 3);
+    Character n3('a', 6);
+    Character n4('b', 7);
+    Character n5('b', 8);
+    END n6(9);
+
+    Combination q1(move(n1), move(n2));     // a|b
+    Group q2(move(q1));                     // (a|b)
+    Iteration q3(move(q2));                 // (a|b)*
+    Concatenation q4(move(q3), move(n3));   // (a|b)*a
+    Concatenation q5(move(q4), move(n4));   // (a|b)*ab
+    Concatenation q6(move(q5), move(n5));   // (a|b)*abb
+    Concatenation q7(move(q6), move(n6));   // (a|b)*abb
+
+    RegexSyntaxTree tree(move(q7));
+    tree.calculateAttributes();
+
+#define EXPECT_NODE_ATTR(node, nullable, firstpos_arr, lastpos_arr) \
+    do {                                                            \
+        set<RegexSyntaxTreeNode *> firstpos {(firstpos_arr)};       \
+        set<RegexSyntaxTreeNode *> lastpos  {(lastpos_arr)};        \
+        EXPECT_EQ((nullable), (node).getNullableAttribute());       \
+        EXPECT_EQ(firstpos,   (node).getFirstposAttribute());       \
+        EXPECT_EQ(lastpos,    (node).getLastposAttribute());        \
+    } while(false)                                                  \
+
+    EXPECT_NODE_ATTR(n1, false, (&n1), (&n1));
+    EXPECT_NODE_ATTR(n2, false, (&n2), (&n2));
+    EXPECT_NODE_ATTR(n3, false, (&n3), (&n3));
+    EXPECT_NODE_ATTR(n4, false, (&n4), (&n4));
+    EXPECT_NODE_ATTR(n5, false, (&n5), (&n5));
+    EXPECT_NODE_ATTR(n6, false, (&n6), (&n6));
+
+    EXPECT_NODE_ATTR(q1, false, (&n1, &n2), (&n1, &n2));
+    EXPECT_NODE_ATTR(q2, false, (&n1, &n2), (&n1, &n2));
+    EXPECT_NODE_ATTR(q3, true,  (&n1, &n2), (&n1, &n2));
+    EXPECT_NODE_ATTR(q4, false, (&n1, &n2, &n3), (&n3));
+    EXPECT_NODE_ATTR(q5, false, (&n1, &n2, &n3), (&n4));
+    EXPECT_NODE_ATTR(q6, false, (&n1, &n2, &n3), (&n5));
+    EXPECT_NODE_ATTR(q7, false, (&n1, &n2, &n3), (&n6));
+}
