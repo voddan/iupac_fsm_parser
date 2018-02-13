@@ -13,7 +13,9 @@
 using std::string;
 using std::vector;
 
-
+/**
+ * A base class for syntax tree nodes.
+ */
 class SyntaxTreeNode : public indigo::NonCopyable {
 public:
     SyntaxTreeNode(string nodeClass, TextPosition position);
@@ -23,6 +25,7 @@ public:
 
     void addChild(SyntaxTreeNode child);
 
+    // TODO: refactor to return an iterator over children references
     inline const vector<SyntaxTreeNode> & getChildren() const {
         return children;
     }
@@ -31,7 +34,7 @@ public:
     const TextPosition position;
 
 private:
-    vector<SyntaxTreeNode> children;
+    vector<SyntaxTreeNode> children;  //TODO: refactor to be `vector<unique_ptr<SyntaxTreeNode>>`
 };
 
 

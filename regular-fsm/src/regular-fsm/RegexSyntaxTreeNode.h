@@ -12,6 +12,14 @@
 using std::set;
 using std::move;
 
+/**
+ * Base class for regex syntax tree nodes.
+ *
+ * Contains attributes for building a optimal FSA `StateMachine`:
+ *   + `nullable` - true if this node can generate an empty sub-expression
+ *   + `firstpos` - set of all nodes which can start any sub-expression of this node
+ *   + `lastpos`  - set of all nodes which can end any sub-expression of this node
+ */
 class RegexSyntaxTreeNode : public SyntaxTreeNode {
 public:
     RegexSyntaxTreeNode(string nodeClass, TextPosition position);

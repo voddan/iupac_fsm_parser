@@ -13,6 +13,11 @@
 using std::string;
 using std::vector;
 
+/**
+ * An abstract class to encapsulate a tree of `SyntaxTreeNode`.
+ *
+ * Supposed to contain general tree-walking procedures such as `prettyPrint()`
+ */
 class SyntaxTree : public indigo::NonCopyable {
 public:
     explicit SyntaxTree(const SyntaxTreeNode & root);

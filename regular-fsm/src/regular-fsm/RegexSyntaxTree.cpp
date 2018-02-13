@@ -18,10 +18,12 @@ void RegexSyntaxTree::calculateAttributes() {
     calculatePositionAttributes();
 }
 
+// TODO: implement
 void RegexSyntaxTree::calculateNodeAttributes() {
 
 }
 
+// TODO: implement
 void RegexSyntaxTree::calculatePositionAttributes() {
 
 }

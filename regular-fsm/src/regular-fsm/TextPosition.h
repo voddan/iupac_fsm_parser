@@ -11,6 +11,13 @@
 
 using std::string;
 
+/**
+ * `TextPosition` represents a part of the original input string.
+ *
+ * Knowing the original input and the value `begin`,
+ * one can trace any `TextPosition` instance back to its position in the input.
+ * That can be used for precise error reporting.
+ */
 struct TextPosition {
     TextPosition(const string & text, string::size_type begin) :
             text(text), begin(begin), end(begin + text.length()) {}
@@ -27,7 +34,7 @@ struct TextPosition {
 
     const string text;
     const string::size_type begin;
-    const string::size_type end;
+    const string::size_type end;  // TODO: probably can be removed
 };
 
 

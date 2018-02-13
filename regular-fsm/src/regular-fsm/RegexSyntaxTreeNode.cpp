@@ -18,6 +18,7 @@ RegexSyntaxTreeNode::RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept 
     lastposAttribute = move(other.lastposAttribute);
 }
 
-void RegexSyntaxTreeNode::calculateAttributes() {
 
+//TODO: implement
+void RegexSyntaxTreeNode::calculateAttributes() {
 }

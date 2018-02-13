@@ -15,6 +15,9 @@ using std::string;
 using std::vector;
 using std::map;
 
+/**
+ * A syntax tree to represent a structure of a regular expression
+ */
 class RegexSyntaxTree : public SyntaxTree {
 public:
     explicit RegexSyntaxTree(RegexSyntaxTreeNode root);
@@ -22,10 +25,21 @@ public:
 
     void calculateAttributes();
 
+    /**
+     * Calculates attributes in all nodes of its tree,
+     * namely `nullable`, `firstpos` and `lastpos`
+     */
     void calculateNodeAttributes();
 
+    /**
+     * Calculates attributes of the syntax tree,
+     * namely `followpos`
+     */
     void calculatePositionAttributes();
 
+    /**
+     * @return a FSA which parses strings, represented by the structure of this tree
+     */
     StateMachine buildStateMachine();
 
 private:
