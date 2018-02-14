@@ -25,6 +25,7 @@ public:
     string prettyPrint(int indent = 0) const;
 
     void addChild(SyntaxTreeNode * child);
+    void addChild(const SyntaxTreeNode * child);
 
     inline const vector<SyntaxTreeNode *> & getChildren() const {
         return children;

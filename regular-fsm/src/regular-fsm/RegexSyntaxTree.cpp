@@ -7,7 +7,7 @@
 
 using std::move;
 
-RegexSyntaxTree::RegexSyntaxTree(RegexSyntaxTreeNode root) : SyntaxTree(root) {}
+RegexSyntaxTree::RegexSyntaxTree(unique_ptr<RegexSyntaxTreeNode> root) : SyntaxTree(move(root)) {}
 
 RegexSyntaxTree::RegexSyntaxTree(RegexSyntaxTree && other) noexcept : SyntaxTree(move(other)) {
     followposAttribute = move(other.followposAttribute);
@@ -20,7 +20,7 @@ void RegexSyntaxTree::calculateAttributes() {
 
 // TODO: implement
 void RegexSyntaxTree::calculateNodeAttributes() {
-    dynamic_cast<RegexSyntaxTreeNode*>(root)->calculateAttributes();
+    dynamic_cast<RegexSyntaxTreeNode*>(root.get())->calculateAttributes();
 }
 
 // TODO: implement

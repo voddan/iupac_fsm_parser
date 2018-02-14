@@ -40,3 +40,7 @@ string SyntaxTreeNode::prettyPrint(int indent) const {
 void SyntaxTreeNode::addChild(SyntaxTreeNode * child) {
 	children.push_back(child);
 }
+
+void SyntaxTreeNode::addChild(const SyntaxTreeNode * child) {
+	addChild(const_cast<SyntaxTreeNode *>(child));
+}

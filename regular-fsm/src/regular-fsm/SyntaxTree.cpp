@@ -7,7 +7,7 @@
 
 using std::move;
 
-SyntaxTree::SyntaxTree(SyntaxTreeNode & root) : root(unique_ptr<SyntaxTreeNode>(&root)) {}
+SyntaxTree::SyntaxTree(unique_ptr<SyntaxTreeNode> root) : root(move(root)) {}
 
 SyntaxTree::SyntaxTree(SyntaxTree && other) noexcept : root((unique_ptr<SyntaxTreeNode> &&) other.root) {}
 

@@ -22,7 +22,7 @@ using std::unique_ptr;
  */
 class SyntaxTree : public indigo::NonCopyable {
 public:
-    explicit SyntaxTree(SyntaxTreeNode & root);
+    explicit SyntaxTree(unique_ptr<SyntaxTreeNode> root);
     SyntaxTree(SyntaxTree && other) noexcept;
     virtual ~SyntaxTree() = default;
 

@@ -13,6 +13,8 @@
 
 using std::move;
 using std::endl;
+using std::make_unique;
+
 vector<TextPosition> split(char delimiter, TextPosition position);
 
 RegexTemplateCatalog::RegexTemplateCatalog() { }
@@ -51,8 +53,8 @@ void RegexTemplateCatalog::addRegexTemplate(string nodeName, string regexTemplat
 
     templateStrings[nodeName] = move(regexTemplate);
 
-    Group group(nodeName, move(node));
-    parsedTemplates.insert(std::pair<string, RegexSyntaxTreeNode>(nodeName, move(group)));
+    auto group = make_unique<Group>(nodeName, move(node));
+    parsedTemplates.insert(std::pair<string, unique_ptr<RegexSyntaxTreeNode>>(nodeName, move(group)));
 }
 
 void RegexTemplateCatalog::addTokenString(string nodeName, string tokenString) {
@@ -60,17 +62,14 @@ void RegexTemplateCatalog::addTokenString(string nodeName, string tokenString) {
 
     std::unique_ptr<RegexSyntaxTreeNode> root;
     for(auto& branch : branches) {
-        RegexSyntaxTreeNode node = parse_trivial_string(branch);
-        if(root)
-            root.reset(new Combination(move(*root.release()), move(node)));
-        else
-            root.reset(new RegexSyntaxTreeNode(move(node)));
+        auto node = parse_trivial_string(branch);
+        hang_up_to_the_root<Combination>(root, move(node));
     }
 
     tokenStrings[nodeName] = move(tokenString);
 
-    Group group(nodeName, move(*root.release()));
-    parsedTemplates.insert(std::pair<string, RegexSyntaxTreeNode>(nodeName, move(group)));
+    auto group = make_unique<Group>(nodeName, move(root));
+    parsedTemplates.insert(std::pair<string, unique_ptr<RegexSyntaxTreeNode>>(nodeName, move(group)));
 }
 
 RegexSyntaxTree RegexTemplateCatalog::buildRegexSyntaxTree(string rootNodeName) {
@@ -82,11 +81,11 @@ RegexSyntaxTree RegexTemplateCatalog::buildRegexSyntaxTree(string rootNodeName) 
     string rootTemplate = iterator->second;
 
 
-    RegexSyntaxTreeNode root(rootName, TextPosition(rootTemplate, 0));
+    auto root = std::make_unique<RegexSyntaxTreeNode>(rootName, TextPosition(rootTemplate, 0));
 
 
     RegexSyntaxTree tree(move(root));
-    return move(tree);
+    return tree;
 }
 
 string RegexTemplateCatalog::prettyPrint() {
@@ -102,8 +101,8 @@ string RegexTemplateCatalog::prettyPrint() {
 
         auto iter = parsedTemplates.find(name);
         if(iter != parsedTemplates.end()) {
-            RegexSyntaxTreeNode & parsed = iter->second;
-            str << parsed.prettyPrint(2);
+            auto& parsed = iter->second;
+            str << parsed->prettyPrint(2).c_str();
         } else {
             str << "\t\t<ERROR/>" << endl;
         }
@@ -119,8 +118,8 @@ string RegexTemplateCatalog::prettyPrint() {
 
         auto iter = parsedTemplates.find(name);
         if(iter != parsedTemplates.end()) {
-            RegexSyntaxTreeNode & parsed = iter->second;
-            str << parsed.prettyPrint(2);
+            auto& parsed = iter->second;
+            str << parsed->prettyPrint(2).c_str();
         } else {
             str << "\t\t<ERROR/>" << endl;
         }

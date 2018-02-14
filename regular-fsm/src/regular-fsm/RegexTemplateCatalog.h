@@ -50,7 +50,7 @@ public:
 private:
     map<string, string> templateStrings;
     map<string, string> tokenStrings;
-    map<string, RegexSyntaxTreeNode> parsedTemplates;
+    map<string, unique_ptr<RegexSyntaxTreeNode>> parsedTemplates;
 };
 
 

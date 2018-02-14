@@ -38,18 +38,26 @@ using std::vector;
 
 vector<TextPosition> split(char delimiter, TextPosition position);
 
-RegexSyntaxTreeNode parse_extended_reg_exp(TextPosition position);
+unique_ptr<RegexSyntaxTreeNode> parse_extended_reg_exp(TextPosition position);
 
-RegexSyntaxTreeNode parse_ERE_branch(TextPosition position);
+unique_ptr<RegexSyntaxTreeNode> parse_ERE_branch(TextPosition position);
 
-RegexSyntaxTreeNode parse_ERE_dupl_symbol(TextPosition position, RegexSyntaxTreeNode previous);
+unique_ptr<RegexSyntaxTreeNode> parse_ERE_dupl_symbol(TextPosition position, unique_ptr<RegexSyntaxTreeNode> previous);
 
 /**
  * Parses a part of a template, ignoring all special characters
  * @param position - non-empty text position
  * @returns - syntax node with children
  * */
-RegexSyntaxTreeNode parse_trivial_string(TextPosition position);
+unique_ptr<RegexSyntaxTreeNode> parse_trivial_string(TextPosition position);
+
+template <typename JOINT>
+void hang_up_to_the_root(unique_ptr<RegexSyntaxTreeNode> & root, unique_ptr<RegexSyntaxTreeNode> node) {
+    if(root)
+        root.reset(new JOINT(move(root), move(node)));
+    else
+        root = move(node);
+}
 
 
 #endif //IUPAC_FSM_PARSER_REGEXPARSERS_H

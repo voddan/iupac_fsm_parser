@@ -20,7 +20,7 @@ using std::map;
  */
 class RegexSyntaxTree : public SyntaxTree {
 public:
-    explicit RegexSyntaxTree(RegexSyntaxTreeNode root);
+    explicit RegexSyntaxTree(unique_ptr<RegexSyntaxTreeNode> root);
     RegexSyntaxTree(RegexSyntaxTree && other) noexcept;
 
     void calculateAttributes();
