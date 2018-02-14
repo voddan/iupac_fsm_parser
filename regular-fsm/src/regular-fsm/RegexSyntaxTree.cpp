@@ -20,7 +20,7 @@ void RegexSyntaxTree::calculateAttributes() {
 
 // TODO: implement
 void RegexSyntaxTree::calculateNodeAttributes() {
-
+    dynamic_cast<RegexSyntaxTreeNode*>(root)->calculateAttributes();
 }
 
 // TODO: implement

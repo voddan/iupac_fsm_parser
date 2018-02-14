@@ -27,7 +27,7 @@ string SyntaxTreeNode::prettyPrint(int indent) const {
         str << ">" << std::endl;
 
         for(auto& child: children) {
-            str << child.prettyPrint(indent + 1);
+            str << child->prettyPrint(indent + 1);
         }
         str << indent_str << "</" << nodeClass << ">" << std::endl;
     } else {
@@ -37,6 +37,6 @@ string SyntaxTreeNode::prettyPrint(int indent) const {
     return str.str();
 }
 
-void SyntaxTreeNode::addChild(SyntaxTreeNode child) {
-	children.push_back(move(child));
+void SyntaxTreeNode::addChild(SyntaxTreeNode * child) {
+	children.push_back(child);
 }

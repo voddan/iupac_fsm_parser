@@ -57,12 +57,15 @@ class Concatenation : public RegexSyntaxTreeNode {
 public:
     explicit Concatenation(RegexSyntaxTreeNode first,
                            RegexSyntaxTreeNode second) :
+            first(move(first)), second(move(second)),
             RegexSyntaxTreeNode("CAT",
                                 TextPosition(first.position.text + second.position.text,
                                              first.position.begin)) {
-        addChild(move(first));
-        addChild(move(second));
+        addChild(&this->first);
+        addChild(&this->second);
     }
+
+    const RegexSyntaxTreeNode first, second;
 };
 
 class Character : public RegexSyntaxTreeNode {
@@ -80,16 +83,16 @@ public:
 class Group: public RegexSyntaxTreeNode {
 public:
     Group(string name, RegexSyntaxTreeNode node) :
+            node(move(node)),
             RegexSyntaxTreeNode(name,
-                                TextPosition("(" + node.position.text + ")", node.position.begin - 1)) {
-        addChild(move(node));
+                                TextPosition("(" + node.position.text + ")", node.position.begin - 1))
+    {
+        addChild(&this->node);
     }
 
-    Group(RegexSyntaxTreeNode node) :
-            RegexSyntaxTreeNode("GROUP",
-                                TextPosition("(" + node.position.text + ")", node.position.begin - 1)) {
-        addChild(move(node));
-    }
+    Group(RegexSyntaxTreeNode node) : Group("GROUP", move(node)) {}
+
+    const RegexSyntaxTreeNode node;
 };
 
 class Template: public RegexSyntaxTreeNode {
@@ -102,40 +105,56 @@ public:
 class Iteration : public RegexSyntaxTreeNode {
 public:
     explicit Iteration(RegexSyntaxTreeNode node) :
+            node(move(node)),
             RegexSyntaxTreeNode("ITER", TextPosition(node.position.text + "*",
-                                                  node.position.begin)) {
-        addChild(move(node));
+                                                  node.position.begin))
+    {
+        addChild(&this->node);
     }
+
+    const RegexSyntaxTreeNode node;
 };
 
 class PlusIteration : public RegexSyntaxTreeNode {
 public:
     explicit PlusIteration(RegexSyntaxTreeNode node) :
+            node(move(node)),
             RegexSyntaxTreeNode("PITER", TextPosition(node.position.text + "+",
-                                                  node.position.begin)) {
-        addChild(move(node));
+                                                  node.position.begin))
+    {
+        addChild(&this->node);
     }
+
+    const RegexSyntaxTreeNode node;
 };
 
 class Option : public RegexSyntaxTreeNode {
 public:
     explicit Option(RegexSyntaxTreeNode node) :
+            node(move(node)),
             RegexSyntaxTreeNode("OPTION", TextPosition(node.position.text + "?",
-                                                  node.position.begin)) {
-        addChild(move(node));
+                                                  node.position.begin))
+    {
+        addChild(&this->node);
     }
+
+    const RegexSyntaxTreeNode node;
 };
 
 class Combination : public RegexSyntaxTreeNode {
 public:
     explicit Combination(RegexSyntaxTreeNode first,
                          RegexSyntaxTreeNode second) :
+            first(move(first)), second(move(second)),
             RegexSyntaxTreeNode("COMB",
                                 TextPosition(first.position.text + "|" + second.position.text,
-                                             first.position.begin)) {
-        addChild(move(first));
-        addChild(move(second));
+                                             first.position.begin))
+    {
+        addChild(&this->first);
+        addChild(&this->second);
     }
+
+    const RegexSyntaxTreeNode first, second;
 };
 
 /**
@@ -146,10 +165,11 @@ public:
 class Count : public RegexSyntaxTreeNode {
 public:
     explicit Count(RegexSyntaxTreeNode node, TextPosition countPosition, int minCount, int maxCount) :
-            minCount(minCount), maxCount(maxCount),
+            node(move(node)), minCount(minCount), maxCount(maxCount),
             RegexSyntaxTreeNode("COUNT", TextPosition(node.position.text + countPosition.text,
-                                                       node.position.begin)) {
-        addChild(move(node));
+                                                       node.position.begin))
+    {
+        addChild(&this->node);
     }
 
     explicit Count(RegexSyntaxTreeNode node, TextPosition countPosition, int minCount) :
@@ -159,7 +179,7 @@ public:
         return maxCount == -1;
     }
 
-
+    const RegexSyntaxTreeNode node;
     const int minCount;
     const int maxCount;
 };

@@ -21,4 +21,8 @@ RegexSyntaxTreeNode::RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept 
 
 //TODO: implement
 void RegexSyntaxTreeNode::calculateAttributes() {
+    for(auto& ch : getChildren()) {
+        dynamic_cast<RegexSyntaxTreeNode*>(ch)->calculateAttributes();
+    }
+    nullableAttribute = false;
 }

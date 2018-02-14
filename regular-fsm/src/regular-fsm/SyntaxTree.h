@@ -7,11 +7,13 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 #include <base_cpp/non_copyable.h>
 #include "SyntaxTreeNode.h"
 
 using std::string;
 using std::vector;
+using std::unique_ptr;
 
 /**
  * An abstract class to encapsulate a tree of `SyntaxTreeNode`.
@@ -20,13 +22,14 @@ using std::vector;
  */
 class SyntaxTree : public indigo::NonCopyable {
 public:
-    explicit SyntaxTree(const SyntaxTreeNode & root);
+    explicit SyntaxTree(SyntaxTreeNode & root);
     SyntaxTree(SyntaxTree && other) noexcept;
+    virtual ~SyntaxTree() = default;
 
     string prettyPrint() const;
 
-private:
-    const SyntaxTreeNode root;
+protected:
+    const unique_ptr<SyntaxTreeNode> root;
 };
 
 

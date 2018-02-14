@@ -20,13 +20,13 @@ class SyntaxTreeNode : public indigo::NonCopyable {
 public:
     SyntaxTreeNode(string nodeClass, TextPosition position);
     SyntaxTreeNode(SyntaxTreeNode && other) noexcept;
+    virtual ~SyntaxTreeNode() = default;
 
     string prettyPrint(int indent = 0) const;
 
-    void addChild(SyntaxTreeNode child);
+    void addChild(SyntaxTreeNode * child);
 
-    // TODO: refactor to return an iterator over children references
-    inline const vector<SyntaxTreeNode> & getChildren() const {
+    inline const vector<SyntaxTreeNode *> & getChildren() const {
         return children;
     }
 
@@ -34,7 +34,7 @@ public:
     const TextPosition position;
 
 private:
-    vector<SyntaxTreeNode> children;  //TODO: refactor to be `vector<unique_ptr<SyntaxTreeNode>>`
+    vector<SyntaxTreeNode *> children;
 };
 
 

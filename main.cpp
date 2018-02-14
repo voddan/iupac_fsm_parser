@@ -19,30 +19,32 @@ using std::move;
 using std::cout;
 using std::endl;
 
-RegexSyntaxTreeNode testfromTrivialString(TextPosition position) {
-    if(position.empty())
-        return NaN(position.begin);
-
-    ;
-    std::unique_ptr<RegexSyntaxTreeNode> root(new Character(position.text[0], position.begin));
-
-    auto ch = position.text.begin();
-    auto pos = position.begin;
-    for(ch++, pos++; pos != position.end; ch++, pos++) {
-        Character character(*ch, pos);
-        root.reset(new Concatenation(move(*root.release()), move(character)));
-    }
-
-    return move(*root.release());
-}
 
 int main() {
     string str("(ab|c?d+)*e");
+    // (a|b)*abb#
+    // 0123456789
 
     RegexTemplateCatalog catalog;
     catalog.addRegexTemplate("regex", "1(2|34)*5");
+    Character n1('a', 1);
+    Character n2('b', 3);
+    Character n3('a', 6);
+    Character n4('b', 7);
+    Character n5('b', 8);
+    END n6(9);
 
     std::cout << catalog.prettyPrint();
+    Combination q1(move(n1), move(n2));     // a|b
+    Group q2(move(q1));                     // (a|b)
+    Iteration q3(move(q2));                 // (a|b)*
+    Concatenation q4(move(q3), move(n3));   // (a|b)*a
+    Concatenation q5(move(q4), move(n4));   // (a|b)*ab
+    Concatenation q6(move(q5), move(n5));   // (a|b)*abb
+    Concatenation q7(move(q6), move(n6));   // (a|b)*abb
+
+    RegexSyntaxTree tree(move(q7));
+    tree.calculateAttributes();
 
     return 0;
 }

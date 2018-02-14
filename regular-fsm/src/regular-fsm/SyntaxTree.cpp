@@ -7,10 +7,10 @@
 
 using std::move;
 
-SyntaxTree::SyntaxTree(const SyntaxTreeNode & root) : root((SyntaxTreeNode &&) root) {}
+SyntaxTree::SyntaxTree(SyntaxTreeNode & root) : root(unique_ptr<SyntaxTreeNode>(&root)) {}
 
-SyntaxTree::SyntaxTree(SyntaxTree && other) noexcept : root((SyntaxTreeNode &&) other.root) {}
+SyntaxTree::SyntaxTree(SyntaxTree && other) noexcept : root((unique_ptr<SyntaxTreeNode> &&) other.root) {}
 
 string SyntaxTree::prettyPrint() const {
-    return root.prettyPrint();
+    return root->prettyPrint();
 }
