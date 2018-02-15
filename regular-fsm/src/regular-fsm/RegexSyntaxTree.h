@@ -42,6 +42,10 @@ public:
      */
     StateMachine buildStateMachine();
 
+    const map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & getFollowposAttribute() {
+        return followposAttribute;
+    };
+
 private:
     map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> followposAttribute;
 };
