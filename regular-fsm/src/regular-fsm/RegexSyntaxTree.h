@@ -34,6 +34,8 @@ public:
     /**
      * Calculates attributes of the syntax tree,
      * namely `followpos`
+     *
+     * MUST be run only AFTER `calculateNodeAttributes()`
      */
     void calculatePositionAttributes();
 

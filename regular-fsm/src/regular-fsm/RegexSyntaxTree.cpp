@@ -14,18 +14,17 @@ RegexSyntaxTree::RegexSyntaxTree(RegexSyntaxTree && other) noexcept : SyntaxTree
 }
 
 void RegexSyntaxTree::calculateAttributes() {
+    // The order is essential!
     calculateNodeAttributes();
     calculatePositionAttributes();
 }
 
-// TODO: implement
 void RegexSyntaxTree::calculateNodeAttributes() {
     dynamic_cast<RegexSyntaxTreeNode*>(root.get())->calculateAttributes();
 }
 
-// TODO: implement
 void RegexSyntaxTree::calculatePositionAttributes() {
-
+    dynamic_cast<RegexSyntaxTreeNode*>(root.get())->calculatePositionAttributes(followposAttribute);
 }
 
 StateMachine RegexSyntaxTree::buildStateMachine() {

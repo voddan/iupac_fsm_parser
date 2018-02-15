@@ -32,6 +32,11 @@ void RegexSyntaxTreeNode::calculateAttributes() {
     lastposAttribute.clear();
 }
 
+void RegexSyntaxTreeNode::calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) {
+    for(auto& ch : getChildren())
+        dynamic_cast<RegexSyntaxTreeNode*>(ch)->calculatePositionAttributes(positions);
+}
+
 void NaN::calculateAttributes() {
     nullableAttribute = true;
     firstposAttribute.clear();
@@ -48,6 +53,14 @@ void Concatenation::calculateAttributes() {
 
     setInfuse(lastposAttribute, second->getFirstposAttribute());
     if(second->getNullableAttribute()) setInfuse(lastposAttribute, first->getFirstposAttribute());
+}
+
+void Concatenation::calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) {
+    RegexSyntaxTreeNode::calculatePositionAttributes(positions);
+
+    for (auto i : first->getLastposAttribute()) {
+        setInfuse(positions[i], second->getFirstposAttribute());
+    }
 }
 
 void Character::calculateAttributes() {
@@ -82,12 +95,28 @@ void Iteration::calculateAttributes() {
     setInfuse(lastposAttribute, node->getLastposAttribute());
 }
 
+void Iteration::calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) {
+    RegexSyntaxTreeNode::calculatePositionAttributes(positions);
+
+    for (auto i : node->getLastposAttribute()) {
+        setInfuse(positions[i], node->getFirstposAttribute());
+    }
+}
+
 void PlusIteration::calculateAttributes() {
     RegexSyntaxTreeNode::calculateAttributes();
 
     nullableAttribute = node->getNullableAttribute();
     setInfuse(firstposAttribute, node->getFirstposAttribute());
     setInfuse(lastposAttribute, node->getLastposAttribute());
+}
+
+void PlusIteration::calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) {
+    RegexSyntaxTreeNode::calculatePositionAttributes(positions);
+
+    for (auto i : node->getLastposAttribute()) {
+        setInfuse(positions[i], node->getFirstposAttribute());
+    }
 }
 
 void Option::calculateAttributes() {
@@ -116,4 +145,14 @@ void Count::calculateAttributes() {
     nullableAttribute = minCount > 0 ? node->getNullableAttribute() : true;
     setInfuse(firstposAttribute, node->getFirstposAttribute());
     setInfuse(lastposAttribute, node->getLastposAttribute());
+}
+
+void Count::calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) {
+    RegexSyntaxTreeNode::calculatePositionAttributes(positions);
+
+    if(!unlimited() && maxCount <= 0) return;  // no iterations may happen
+
+    for (auto i : node->getLastposAttribute()) {
+        setInfuse(positions[i], node->getFirstposAttribute());
+    }
 }

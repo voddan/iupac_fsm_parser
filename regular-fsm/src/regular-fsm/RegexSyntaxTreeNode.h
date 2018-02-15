@@ -7,10 +7,12 @@
 
 
 #include <set>
+#include <map>
 #include <memory>
 #include "SyntaxTreeNode.h"
 
 using std::set;
+using std::map;
 using std::move;
 using std::unique_ptr;
 
@@ -28,6 +30,7 @@ public:
     RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept;
 
     virtual void calculateAttributes();
+    virtual void calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions);
 
     inline bool getNullableAttribute() const {
         return nullableAttribute;
@@ -71,6 +74,7 @@ public:
     }
 
     void calculateAttributes() override;
+    void calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) override;
 
     const unique_ptr<RegexSyntaxTreeNode> first, second;
 };
@@ -128,6 +132,7 @@ public:
     }
 
     void calculateAttributes() override;
+    void calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) override;
 
     const unique_ptr<RegexSyntaxTreeNode> node;
 };
@@ -143,6 +148,7 @@ public:
     }
 
     void calculateAttributes() override;
+    void calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) override;
 
     const unique_ptr<RegexSyntaxTreeNode> node;
 };
@@ -203,6 +209,7 @@ public:
     }
 
     void calculateAttributes() override;
+    void calculatePositionAttributes(map<RegexSyntaxTreeNode *, set<RegexSyntaxTreeNode *>> & positions) override;
 
     const unique_ptr<RegexSyntaxTreeNode> node;
     const int minCount;
