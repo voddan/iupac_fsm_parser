@@ -27,7 +27,7 @@ public:
     RegexSyntaxTreeNode(string nodeClass, TextPosition position);
     RegexSyntaxTreeNode(RegexSyntaxTreeNode && other) noexcept;
 
-    void calculateAttributes();
+    virtual void calculateAttributes();
 
     inline bool getNullableAttribute() const {
         return nullableAttribute;
@@ -39,7 +39,7 @@ public:
         return lastposAttribute;
     }
 
-private:
+protected:
     bool nullableAttribute;
     set<RegexSyntaxTreeNode *> firstposAttribute;
     set<RegexSyntaxTreeNode *> lastposAttribute;
@@ -53,6 +53,8 @@ class NaN : public RegexSyntaxTreeNode {
 public:
     explicit NaN(string::size_type begin) :
             RegexSyntaxTreeNode("NAN", TextPosition("", begin)) {}
+
+    void calculateAttributes() override;
 };
 
 class Concatenation : public RegexSyntaxTreeNode {
@@ -62,10 +64,13 @@ public:
             first(move(first)), second(move(second)),
             RegexSyntaxTreeNode("CAT",
                                 TextPosition(first->position.text + second->position.text,
-                                             first->position.begin)) {
+                                             first->position.begin))
+    {
         addChild(this->first.get());
         addChild(this->second.get());
     }
+
+    void calculateAttributes() override;
 
     const unique_ptr<RegexSyntaxTreeNode> first, second;
 };
@@ -74,12 +79,16 @@ class Character : public RegexSyntaxTreeNode {
 public:
     explicit Character(char ch, string::size_type begin) :
             RegexSyntaxTreeNode("CH", TextPosition(string(1, ch), begin)) {}
+
+    void calculateAttributes() override;
 };
 
 class END : public RegexSyntaxTreeNode {
 public:
     explicit END(string::size_type begin) :
             RegexSyntaxTreeNode("END", TextPosition("", begin)) {}
+
+    void calculateAttributes() override;
 };
 
 class Group: public RegexSyntaxTreeNode {
@@ -94,6 +103,8 @@ public:
 
     Group(unique_ptr<RegexSyntaxTreeNode> node) : Group("GROUP", move(node)) {}
 
+    void calculateAttributes() override;
+
     const unique_ptr<RegexSyntaxTreeNode> node;
 };
 
@@ -102,6 +113,8 @@ public:
     Template(TextPosition namePosition) :
             RegexSyntaxTreeNode(namePosition.text,
                                 TextPosition("%" + namePosition.text + "%", namePosition.begin - 1)) {}
+
+    void calculateAttributes() override;
 };
 
 class Iteration : public RegexSyntaxTreeNode {
@@ -113,6 +126,8 @@ public:
     {
         addChild(this->node.get());
     }
+
+    void calculateAttributes() override;
 
     const unique_ptr<RegexSyntaxTreeNode> node;
 };
@@ -127,6 +142,8 @@ public:
         addChild(this->node.get());
     }
 
+    void calculateAttributes() override;
+
     const unique_ptr<RegexSyntaxTreeNode> node;
 };
 
@@ -139,6 +156,8 @@ public:
     {
         addChild(this->node.get());
     }
+
+    void calculateAttributes() override;
 
     const unique_ptr<RegexSyntaxTreeNode> node;
 };
@@ -155,6 +174,8 @@ public:
         addChild(this->first.get());
         addChild(this->second.get());
     }
+
+    void calculateAttributes() override;
 
     const unique_ptr<RegexSyntaxTreeNode> first, second;
 };
@@ -175,11 +196,13 @@ public:
     }
 
     explicit Count(unique_ptr<RegexSyntaxTreeNode> node, TextPosition countPosition, int minCount) :
-            Count(move(node), countPosition, minCount, -1) {}
+            Count(move(node), move(countPosition), minCount, -1) {}
 
     inline bool unlimited() {
         return maxCount == -1;
     }
+
+    void calculateAttributes() override;
 
     const unique_ptr<RegexSyntaxTreeNode> node;
     const int minCount;
